@@ -14,6 +14,7 @@ public final class Textures {
 
     /// Entity textures
     public static final Texture PLAYER_TEXTURE = new Texture("/res/textures/entities/player.png"); ///< Test player
+    public static final Texture RED_DOT_TEXTURE = new Texture("/res/textures/entities/red_dot.png"); ///< Test critter
 
     /// Tile textures
     public static final Texture GRASS_TILE_TEXTURE = new Texture("/res/textures/tiles/grass_tile.png");

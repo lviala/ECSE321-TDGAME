@@ -1,6 +1,7 @@
 package map;
 
 import data.Textures;
+import map.path.PathTile;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Image;
 import util.vectors.vec2;
@@ -13,6 +14,8 @@ public class MapGenerator {
 
     public static Color GRASS_GEN_COLOR = new Color(0, 255, 0);
     public static Color SAND_GEN_COLOR = new Color(255, 255, 0);
+    public static Color PATH_START_COLOR = new Color(0, 0, 255);
+    public static Color PATH_END_COLOR = new Color(255, 0, 0);
 
     public static Tile[][] generate(Image image) {
 
@@ -26,7 +29,14 @@ public class MapGenerator {
                     tilemap[i][j] = new Tile(new vec2(i * tileWidth, j * tileHeight), Textures.GRASS_TILE_TEXTURE, true);
                 } else if (image.getColor(i, j).equals(SAND_GEN_COLOR)) {
                     tilemap[i][j] = new PathTile(new vec2(i * tileWidth, j * tileHeight), Textures.SAND_TILE_TEXTURE);
+                }else if (image.getColor(i, j).equals(PATH_START_COLOR)) {
+                    tilemap[i][j] = new PathTile(new vec2(i * tileWidth, j * tileHeight), Textures.SAND_TILE_TEXTURE);
+                    ((PathTile) tilemap[i][j]).setStart(true);
+                }else if (image.getColor(i, j).equals(PATH_END_COLOR)) {
+                    tilemap[i][j] = new PathTile(new vec2(i * tileWidth, j * tileHeight), Textures.SAND_TILE_TEXTURE);
+                    ((PathTile) tilemap[i][j]).setEnd(true);
                 }
+
             }
         }
         return tilemap;

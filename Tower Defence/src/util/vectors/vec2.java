@@ -33,16 +33,22 @@ public class vec2 {
     }
 
     /// Returns the length of the vector
-    public double length() {
-        return Math.sqrt((x*x) + (y*y));
+    public float length() {
+        return (float) Math.sqrt((x*x) + (y*y));
+    }
+
+    /// Normalizes the vector
+    public void normalize(){
+        x /= length();
+        y /= length();
     }
 
     /// Returns angle in radians (range: -Pi to Pi)
-    public double angle() {
+    public float angle() {
         if (x > 0){
-                return Math.atan(y / x);
+                return (float) Math.atan(y / x);
         } else{
-            return Math.atan(y / x) + (y * Math.PI);
+            return (float) (Math.atan(y / x) + (y * Math.PI));
 
         }
     }
@@ -52,9 +58,26 @@ public class vec2 {
         return new vec2(x + vec.x, y + vec.y);
     }
 
+    /// return difference of two vectors
+    public vec2 diff(vec2 vec){
+        return new vec2(x - vec.x, y - vec.y);
+    }
+
+    /// return the vector scaled by a factor
+    public vec2 mult(float factor){
+        return new vec2(x * factor, y * factor);
+    }
+
+
     /// Add the value of a vector to this instance
     public void addSelf(vec2 vec){
         x += vec.x;
         y += vec.y;
+    }
+
+    /// Add the value of a vector to this instance
+    public void multSelf(float value){
+        x *= value;
+        y *= value;
     }
 }

@@ -5,6 +5,8 @@
 package core.gamestates;
 
 import data.PNGMaps;
+import data.Textures;
+import entities.Critter;
 import map.TileMap;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -19,6 +21,7 @@ public class Play extends BasicGameState {
 
     private Mousew mouse;
     private TileMap map;
+    private Critter critter;
 
     public Play(int ID){
         stateID = ID;
@@ -32,16 +35,29 @@ public class Play extends BasicGameState {
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         mouse = new Mousew(gameContainer.getHeight());
-        map = new TileMap(PNGMaps.testmap_1);
     }
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
         map.render();
+        critter.draw();
     }
 
     @Override
-    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
+    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int delta) throws SlickException {
+        critter.update(delta);
+    }
 
+    @Override
+    public void keyPressed(int key, char c) {
+        super.keyPressed(key, c);
+    }
+
+    @Override
+    public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+        super.enter(container, game);
+        map = new TileMap(PNGMaps.testmap_1);
+        critter = new Critter(Textures.RED_DOT_TEXTURE);
+        critter.init(map.getStartTile());
     }
 }

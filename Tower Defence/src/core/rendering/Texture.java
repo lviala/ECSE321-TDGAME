@@ -33,6 +33,11 @@ public class Texture {
         image.draw(x, y);
     }
 
+    /// Draw the image to the buffer offset by its centre
+    public void drawCentre(float x, float y){
+        image.draw(x - image.getWidth() / 2, y - image.getHeight() / 2);
+    }
+
     /// Apply color filter and draw the image to the buffer
     public void draw(float x, float y, Color filter){
         image.draw(x, y, filter);
