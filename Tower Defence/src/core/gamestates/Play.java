@@ -10,6 +10,7 @@ import entities.Critter;
 import map.TileMap;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -22,6 +23,7 @@ public class Play extends BasicGameState {
     private Mousew mouse;
     private TileMap map;
     private Critter critter;
+    private GameContainer gameContainer;
 
     public Play(int ID){
         stateID = ID;
@@ -35,6 +37,7 @@ public class Play extends BasicGameState {
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         mouse = new Mousew(gameContainer.getHeight());
+        this.gameContainer = gameContainer;
     }
 
     @Override
@@ -51,6 +54,10 @@ public class Play extends BasicGameState {
     @Override
     public void keyPressed(int key, char c) {
         super.keyPressed(key, c);
+
+        if (key == Input.KEY_ESCAPE){
+            gameContainer.exit();
+        }
     }
 
     @Override

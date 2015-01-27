@@ -18,7 +18,7 @@ public class Critter {
 
     private boolean update = true;
 
-    private final float SPEED = 0.5f;
+    private final float SPEED = 0.2f;
 
 
     public Critter(Texture texture){
