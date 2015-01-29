@@ -10,6 +10,7 @@ import org.newdawn.slick.SlickException;
 public class PNGMaps {
 
     public static final Image testmap_1 = loadImage("/res/maps/testmap_1.png");
+    public static final Image testmap_2 = loadImage("/res/maps/map20x11.png");
 
     /// Load image from single file
     private static Image loadImage(String path){

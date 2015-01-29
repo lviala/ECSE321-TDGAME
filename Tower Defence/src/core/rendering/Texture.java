@@ -23,7 +23,7 @@ public class Texture {
        image = loadImage(path);
     }
 
-    /// Sprite sheet constructor
+    /// Sprite sheet constructor (might never be used)
     public Texture(SpriteSheet ss, int i, int j){
         image = loadImage(ss, i ,j);
     }
@@ -49,8 +49,8 @@ public class Texture {
     public int getHeight(){ return image.getHeight(); }
 
 
-    /// Private functions ///
 
+    /// Private functions ///
 
     /// Load image from single file
     private Image loadImage(String path){

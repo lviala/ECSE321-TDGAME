@@ -26,14 +26,18 @@ public class MapGenerator {
         for (int j = 0; j < image.getHeight(); j++) {
             for (int i = 0; i < image.getWidth(); i++) {
                 if (image.getColor(i, j).equals(GRASS_GEN_COLOR)) {
-                    tilemap[i][j] = new Tile(new vec2(i * tileWidth, j * tileHeight), Textures.GRASS_TILE_TEXTURE, true);
+                    if ((i + j) % 2 == 0) {
+                        tilemap[i][j] = new Tile(new vec2(i * tileWidth, j * tileHeight), Textures.ALT_GRASS_DARK_TEXTURE, true);
+                    }else{
+                        tilemap[i][j] = new Tile(new vec2(i * tileWidth, j * tileHeight), Textures.ALT_GRASS_LIGHT_TEXTURE, true);
+                    }
                 } else if (image.getColor(i, j).equals(SAND_GEN_COLOR)) {
-                    tilemap[i][j] = new PathTile(new vec2(i * tileWidth, j * tileHeight), Textures.SAND_TILE_TEXTURE);
+                    tilemap[i][j] = new PathTile(new vec2(i * tileWidth, j * tileHeight), Textures.ALT_PATH_TEXTURE);
                 }else if (image.getColor(i, j).equals(PATH_START_COLOR)) {
-                    tilemap[i][j] = new PathTile(new vec2(i * tileWidth, j * tileHeight), Textures.SAND_TILE_TEXTURE);
+                    tilemap[i][j] = new PathTile(new vec2(i * tileWidth, j * tileHeight), Textures.ALT_PATH_TEXTURE);
                     ((PathTile) tilemap[i][j]).setStart(true);
                 }else if (image.getColor(i, j).equals(PATH_END_COLOR)) {
-                    tilemap[i][j] = new PathTile(new vec2(i * tileWidth, j * tileHeight), Textures.SAND_TILE_TEXTURE);
+                    tilemap[i][j] = new PathTile(new vec2(i * tileWidth, j * tileHeight), Textures.ALT_PATH_TEXTURE);
                     ((PathTile) tilemap[i][j]).setEnd(true);
                 }
 

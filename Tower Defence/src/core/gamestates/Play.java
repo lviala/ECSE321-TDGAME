@@ -6,7 +6,8 @@ package core.gamestates;
 
 import data.PNGMaps;
 import data.Textures;
-import entities.Critter;
+import entities.critters.Critter;
+import entities.critters.CritterManager;
 import map.TileMap;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -22,7 +23,7 @@ public class Play extends BasicGameState {
 
     private Mousew mouse;
     private TileMap map;
-    private Critter critter;
+    private CritterManager critterManager;
     private GameContainer gameContainer;
 
     public Play(int ID){
@@ -43,28 +44,32 @@ public class Play extends BasicGameState {
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
         map.render();
-        critter.draw();
+        critterManager.render();
     }
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int delta) throws SlickException {
-        critter.update(delta);
+        critterManager.update(delta);
     }
 
     @Override
     public void keyPressed(int key, char c) {
         super.keyPressed(key, c);
 
-        if (key == Input.KEY_ESCAPE){
-            gameContainer.exit();
+        switch (key){
+            case Input.KEY_ESCAPE:
+                gameContainer.exit();
+                break;
+            case Input.KEY_SPACE:
+                critterManager.startNextWave();
         }
+
     }
 
     @Override
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
         super.enter(container, game);
-        map = new TileMap(PNGMaps.testmap_1);
-        critter = new Critter(Textures.RED_DOT_TEXTURE);
-        critter.init(map.getStartTile());
+        map = new TileMap(PNGMaps.testmap_2);
+        critterManager = new CritterManager("res/files/sample_level.txt", map.getStartTile(), map.getEndTile());
     }
 }

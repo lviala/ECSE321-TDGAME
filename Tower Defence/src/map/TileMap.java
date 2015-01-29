@@ -31,13 +31,14 @@ public class TileMap {
     }
 
     public PathTile getStartTile() { return start_tile; }
+    public PathTile getEndTile() { return end_tile; }
 
     private void setStart(){
         for (int j = 0; j < tiles[0].length; j++) {
             for (int i = 0; i < tiles.length; i++) {
                 if (tiles[i][j] instanceof PathTile) {
                     if (((PathTile) tiles[i][j]).isStart()){
-                        start_tile = (PathTile) tiles[0][j];
+                        start_tile = (PathTile) tiles[i][j];
                         return;
                     }
                 }

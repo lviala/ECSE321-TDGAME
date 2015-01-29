@@ -15,10 +15,15 @@ public final class Textures {
     /// Entity textures
     public static final Texture PLAYER_TEXTURE = new Texture("/res/textures/entities/player.png"); ///< Test player
     public static final Texture RED_DOT_TEXTURE = new Texture("/res/textures/entities/red_dot.png"); ///< Test critter
+    public static final Texture UGLY_CREEP_TEXTURE = new Texture("/res/textures/entities/damn_ugly_creep.png"); ///< Test critter
 
     /// Tile textures
-    public static final Texture GRASS_TILE_TEXTURE = new Texture("/res/textures/tiles/grass_tile.png");
-    public static final Texture SAND_TILE_TEXTURE = new Texture("/res/textures/tiles/sand_tile.png");
+    public static final Texture GRASS_TILE_TEXTURE = new Texture("/res/textures/tiles/grass_tile_64.png");
+    public static final Texture SAND_TILE_TEXTURE = new Texture("/res/textures/tiles/sand_tile_64.png");
+
+    public static final Texture ALT_GRASS_DARK_TEXTURE = new Texture("/res/textures/tiles/alt_grass_dark_64.png");
+    public static final Texture ALT_GRASS_LIGHT_TEXTURE = new Texture("/res/textures/tiles/alt_grass_light_64.png");
+    public static final Texture ALT_PATH_TEXTURE = new Texture("/res/textures/tiles/alt_path_64.png");
 
     /// Button textures
     public static final Texture PLAY_BUTTON_TEXTURE = new Texture("/res/textures/gui/playbutton.png");
