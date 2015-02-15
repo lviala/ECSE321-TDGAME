@@ -2,58 +2,68 @@ package entities.critters;
 
 import core.rendering.Texture;
 import data.Textures;
+import entities.Entity;
 import entities.critters.critter_types.NormalCritter;
 import map.path.PathTile;
-import util.Box;
 import util.vectors.vec2;
 
 /**
  * Created by Francis O'Brien - 1/27/2015 - 12:42 AM
  */
 
-public abstract class Critter {
+public abstract class Critter extends Entity {
 
     public static enum Type {NORMAL, FAST}
 
-    private vec2 pos;
-    private Box box;
-    private Texture texture;
     private PathTile currentTile;
 
     private CritterManager manager;
 
     private boolean reachedEnd = false;
-    private boolean spawned = false;
-    private final float SPEED = 0.6f;
+    private boolean alive = false;
+
+
+    protected float speed = 0.2f;
+    protected int health = 20;
 
 
     public Critter(Texture texture, CritterManager manager){
-        this.texture = texture;
+        super(texture);
         this.manager = manager;
-
-        pos = new vec2();
-        box = new Box(pos, texture);
-
     }
 
     public void spawn(PathTile tile){
-        spawned = true;
+        alive = true;
         currentTile = tile;
         pos.x = tile.getCentre().x;
         pos.y = tile.getCentre().y;
     }
 
 
+    @Override
     public void update(int delta){
-        if (!reachedEnd && spawned) {
+        if (!reachedEnd && alive) {
             movetowards(currentTile.getCentre(), delta);
         }
     }
 
+    @Override
     public void draw(){
-        if (spawned) {
+        if (alive) {
             texture.drawCentre(pos.x, pos.y);
         }
+    }
+
+    public void damage(int damage){
+        health -= damage;
+        if (health < 1){
+            manager.kill(this);
+            alive = false;
+        }
+    }
+
+    public boolean isDead(){
+        return !alive;
     }
 
     public static Critter create(Type type, CritterManager manager){
@@ -66,7 +76,7 @@ public abstract class Critter {
     }
 
     private void movetowards(vec2 destination, int delta){
-        float movespeed = SPEED * delta;
+        float movespeed = speed * delta;
 
         vec2 move = destination.diff(pos);
         if (move.length() > movespeed){
@@ -75,6 +85,7 @@ public abstract class Critter {
         }else{
             if (currentTile.isEnd()){
                 manager.reachedEnd(this);
+                alive = false;
             }else {
                 float moveRemaining = movespeed - move.length();
                 currentTile = currentTile.getNext();

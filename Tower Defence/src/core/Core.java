@@ -45,6 +45,7 @@ public class Core extends StateBasedGame{
             appgc.setDisplayMode(WIDTH, HEIGHT, false); ///< Set up initial display (window) properties: width, height, fullscreen (initialized to false)
             appgc.setShowFPS(true); ///< Enable show FPS
             appgc.setVSync(false); ///< Disable Vsync for testing purposes (we can see how certain features affect relative FPS)
+            appgc.setAlwaysRender(true); ///< Enables rendering when other windows are active
             appgc.start();
         } catch (SlickException e) { ///< Handle exceptions if game initialization fails
             e.printStackTrace();

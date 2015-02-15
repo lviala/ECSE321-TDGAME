@@ -16,6 +16,7 @@ public final class Textures {
     public static final Texture PLAYER_TEXTURE = new Texture("/res/textures/entities/player.png"); ///< Test player
     public static final Texture RED_DOT_TEXTURE = new Texture("/res/textures/entities/red_dot.png"); ///< Test critter
     public static final Texture UGLY_CREEP_TEXTURE = new Texture("/res/textures/entities/damn_ugly_creep.png"); ///< Test critter
+    public static final Texture SHIT_TOWER_TEXTURE = new Texture("/res/textures/entities/shit_tower.png"); ///< Test critter
 
     /// Tile textures
     public static final Texture GRASS_TILE_TEXTURE = new Texture("/res/textures/tiles/grass_tile_64.png");

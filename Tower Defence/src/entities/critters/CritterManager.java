@@ -77,6 +77,10 @@ public class CritterManager {
         }
     }
 
+    public void kill(Critter critter){
+        toBeRemoved.add(critter);
+    }
+
     public void reachedEnd(Critter critter){
         // Remove life
         toBeRemoved.add(critter);
@@ -103,7 +107,6 @@ public class CritterManager {
 
         current_wave = waves.pop();
 
-        System.out.print("loaded");
         waveCritters = current_wave.critters.size();
         for (int i = current_wave.critters.size() - 1; i >= 0; i--){
             unspawnedCritters.push(Critter.create(current_wave.critters.get(i), this));
@@ -136,6 +139,10 @@ public class CritterManager {
             waves.push(inOrderWaveList.get(i));
         }
 
+    }
+
+    public LinkedList<Critter> getLiveCritters(){
+        return liveCritters;
     }
 
 }

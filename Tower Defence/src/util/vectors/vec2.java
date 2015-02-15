@@ -39,8 +39,9 @@ public class vec2 {
 
     /// Normalizes the vector
     public void normalize(){
-        x /= length();
-        y /= length();
+        float length = length();
+        x /= length;
+        y /= length;
     }
 
     /// Returns angle in radians (range: -Pi to Pi)
@@ -68,11 +69,21 @@ public class vec2 {
         return new vec2(x * factor, y * factor);
     }
 
+    /// Returns the distance between two points
+    public float distance(vec2 p2){
+        return diff(p2).length();
+    }
 
     /// Add the value of a vector to this instance
     public void addSelf(vec2 vec){
         x += vec.x;
         y += vec.y;
+    }
+
+    /// Set the value of a vector to this instance
+    public void setSelf(vec2 vec){
+        x = vec.x;
+        y = vec.y;
     }
 
     /// Add the value of a vector to this instance
