@@ -6,30 +6,46 @@ package core.gamestates;
 
 import data.PNGMaps;
 import data.Textures;
-import entities.critters.Critter;
+import entities.Player;
 import entities.critters.CritterManager;
-import entities.projectiles.Projectile;
 import entities.towers.Tower;
+import entities.towers.TowerManager;
+import gui.control.GUIController;
+import gui.control.states.GUIStateIDs;
+import gui.control.states.PlayMain_gui;
+import map.Tile;
 import map.TileMap;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.particles.ParticleSystem;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import util.Mousew;
-import util.vectors.vec2;
+import particles.ParticleUtilities;
+import util.MouseWrapper;
 
 public class Play extends BasicGameState {
 
     private int stateID;
 
-    private Mousew mouse;
+    private Player player;
     private TileMap map;
-    private CritterManager critterManager;
-    private GameContainer gameContainer;
+    private MouseWrapper mouse;
 
-    private Tower testTower;
+    private GameContainer gameContainer;
+    private CritterManager critterManager;
+    private TowerManager towerManager;
+    private GUIController guiController;
+
+    private ParticleSystem particleSystem;
+
+
+    /// Testing ///
+
+
+
+    /// End Testing ///
 
     public Play(int ID){
         stateID = ID;
@@ -42,7 +58,8 @@ public class Play extends BasicGameState {
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
-        mouse = new Mousew(gameContainer.getHeight());
+        mouse = new MouseWrapper(gameContainer.getHeight());
+        guiController = new GUIController(gameContainer, stateBasedGame, mouse);
         this.gameContainer = gameContainer;
     }
 
@@ -50,13 +67,30 @@ public class Play extends BasicGameState {
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
         map.render();
         critterManager.render();
-        testTower.draw();
+        towerManager.render();
+        particleSystem.render();
+        guiController.render();
+
+        /// Testing ///
+
+
+
+        /// End Testing ///
+
     }
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int delta) throws SlickException {
+        mouse.update();
+        guiController.update();
         critterManager.update(delta);
-        testTower.update(delta);
+        towerManager.update(delta);
+        particleSystem.update(delta);
+
+        /// Testing ///
+
+
+        /// End Testing ///
     }
 
     @Override
@@ -76,8 +110,38 @@ public class Play extends BasicGameState {
     @Override
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
         super.enter(container, game);
-        map = new TileMap(PNGMaps.testmap_2);
+        player = new Player(1000, 30);
+        map = new TileMap(PNGMaps.testmap_3);
         critterManager = new CritterManager("res/files/sample_level.txt", map.getStartTile(), map.getEndTile());
-        testTower = new Tower(Textures.SHIT_TOWER_TEXTURE, new vec2(9 * 64, 6 * 64), critterManager);
+        towerManager = new TowerManager(map);
+        particleSystem = ParticleUtilities.createSystem(Textures.SQAURE_PARTICLE_TEXTURE, 2000);
+        guiController.addState(new PlayMain_gui(GUIStateIDs.PLAY_MAIN.ID, player, map, this));
+        guiController.enterState(GUIStateIDs.PLAY_MAIN.ID);
+
+
+
+        /// Testing ///
+
+
+        /// End Testing ///
+
+    }
+
+    @Override
+    public void mouseClicked(int mouseButton, int x, int y, int clickCount) {
+        super.mouseClicked(mouseButton, x, y, clickCount);
+        guiController.mouseClicked(mouseButton, clickCount);
+    }
+
+    public void addTower(Tower.Type type){
+        if (player.getCurrency() >= type.cost()) {
+            Tile tile = map.getTile(mouse.getPosition().x, mouse.getPosition().y);
+            Tower tower = Tower.create(type, tile.getPosition(), critterManager);
+
+            if (tile.placeTower(tower)) {
+                towerManager.addTower(tower);
+                player.updateCurrency(-type.cost());
+            }
+        }
     }
 }

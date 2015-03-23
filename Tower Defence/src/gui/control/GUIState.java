@@ -2,7 +2,7 @@ package gui.control;
 
 import gui.elements.GUIElement;
 import gui.elements.buttons.Button;
-import util.Mousew;
+import util.MouseWrapper;
 
 import java.util.ArrayList;
 
@@ -16,9 +16,11 @@ public abstract class GUIState {
 
     protected GUIController controller;
 
-    private ArrayList<GUIElement> elements = new ArrayList<GUIElement>();
-    private ArrayList<Button> buttons = new ArrayList<Button>();
-    protected Mousew mouse;
+    protected ArrayList<GUIElement> elements = new ArrayList<GUIElement>();
+    protected ArrayList<Button> buttons = new ArrayList<Button>();
+    protected MouseWrapper mouse;
+
+    protected GUIOverlay currentOverlay;
 
     public GUIState(int id){
         ID = id;
@@ -35,12 +37,12 @@ public abstract class GUIState {
         this.controller = controller;
     }
 
-    public void setMouse(Mousew mouse){
+    public void setMouse(MouseWrapper mouse){
         this.mouse = mouse;
     }
 
     public void addElement(GUIElement e){
-        if (e instanceof Button) buttons.add((Button) e);
+        if (e instanceof Button) buttons.add(((Button) e).getID(), (Button) e);
         else elements.add(e);
     }
 
@@ -48,21 +50,37 @@ public abstract class GUIState {
         for (Button b : buttons){
             b.isMouseWithin(mouse);
         }
+        if (currentOverlay != null){
+            currentOverlay.update();
+        }
     }
 
     public void mouseClicked(int mouseButton, int clickCount){
+
+        if (currentOverlay != null){
+            currentOverlay.mouseClicked(mouseButton, clickCount);
+        }
+
         for (Button b : buttons){
                 if (b.mouseClicked(mouseButton, clickCount)) buttonClicked(b.getID(), mouseButton, clickCount);
         }
     }
 
     public void draw(){
-        for (Button b : buttons) {
-            b.draw();
-        }
         for (GUIElement e : elements){
             e.draw();
         }
+        for (Button b : buttons) {
+            b.draw();
+        }
+
+        if (currentOverlay != null){
+            currentOverlay.draw();
+        }
+    }
+
+    public void closeOverlay(){
+        currentOverlay = null;
     }
 
 }

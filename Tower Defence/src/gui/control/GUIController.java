@@ -1,9 +1,8 @@
 package gui.control;
 
-import gui.control.states.MainMenu_gui;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
-import util.Mousew;
+import util.MouseWrapper;
 
 import java.util.HashMap;
 
@@ -13,7 +12,7 @@ import java.util.HashMap;
 
 public class GUIController {
 
-    private Mousew mouse;
+    private MouseWrapper mouse;
     private GameContainer gameContainer;
     private StateBasedGame stateBasedGame;
 
@@ -21,7 +20,7 @@ public class GUIController {
     private HashMap<Integer, GUIState> states = new HashMap<Integer, GUIState>();
 
 
-    public GUIController(GameContainer gameContainer, StateBasedGame stateBasedGame, Mousew mouse){
+    public GUIController(GameContainer gameContainer, StateBasedGame stateBasedGame, MouseWrapper mouse){
         this.gameContainer = gameContainer;
         this.stateBasedGame = stateBasedGame;
         this.mouse = mouse;

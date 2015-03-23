@@ -4,7 +4,6 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
-import util.vectors.vec2;
 
 /**
  * Created by Francis O'Brien - 1/7/2015 - 1:00 AM
@@ -33,20 +32,25 @@ public class Texture {
         image.draw(x, y);
     }
 
-    /// Draw the image to the buffer offset by its centre
-    public void drawCentre(float x, float y){
-        image.draw(x - image.getWidth() / 2, y - image.getHeight() / 2);
-    }
-
     /// Apply color filter and draw the image to the buffer
     public void draw(float x, float y, Color filter){
         image.draw(x, y, filter);
     }
 
+    /// Draw the image to the buffer offset by its centre
+    public void drawCentre(float x, float y){
+        image.draw(x - image.getWidth() / 2, y - image.getHeight() / 2);
+    }
+
+    /// Draw the image to the buffer offset by its centre and apply color filter
+    public void drawCentre(float x, float y, Color color) {
+        image.draw(x - image.getWidth() / 2, y - image.getHeight() / 2, color);
+    }
 
     /// Getters ///
     public int getWidth(){ return image.getWidth(); }
     public int getHeight(){ return image.getHeight(); }
+    public Image getImage(){ return image; }
 
 
 
@@ -69,6 +73,7 @@ public class Texture {
     private Image loadImage(SpriteSheet ss, int i, int j){
         return ss.getSprite(i, j);
     }
+
 
 
 }

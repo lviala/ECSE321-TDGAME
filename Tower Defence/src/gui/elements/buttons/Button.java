@@ -3,10 +3,9 @@ package gui.elements.buttons;
 import core.rendering.Texture;
 import gui.elements.Clikeable;
 import gui.elements.GUIElement;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.Input;
 import util.Box;
-import util.Mousew;
+import util.MouseWrapper;
 import util.vectors.vec2;
 
 /**
@@ -17,7 +16,7 @@ public abstract class Button extends GUIElement implements Clikeable {
 
     private final int ID;
     protected Box box;
-    protected boolean mouseOver = false;
+    protected boolean isMouseover = false;
 
 
     public Button(int id, vec2 pos, Texture texture){
@@ -26,12 +25,12 @@ public abstract class Button extends GUIElement implements Clikeable {
         box = new Box(position, texture); ///< Give box an shallow copy of the protected vec2 position, hence, box's x and y will change as position's do
     }
 
-    public boolean isMouseWithin(Mousew mouse){
+    public boolean isMouseWithin(MouseWrapper mouse){
         if(box.isWithin(mouse.getPosition())){
-            mouseOver = true;
+            isMouseover = true;
             return true;
         }else{
-            mouseOver = false;
+            isMouseover = false;
             return false;
         }
     }
@@ -44,7 +43,7 @@ public abstract class Button extends GUIElement implements Clikeable {
     @Override
     public boolean mouseClicked(int mouseButton, int clickCount) {
         if (mouseButton == Input.MOUSE_LEFT_BUTTON){
-            if (mouseOver){
+            if (isMouseover){
                 internalClickedResponse(mouseButton, clickCount);
                 return true;
             }

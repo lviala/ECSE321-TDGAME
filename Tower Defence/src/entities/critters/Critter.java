@@ -22,9 +22,9 @@ public abstract class Critter extends Entity {
     private boolean reachedEnd = false;
     private boolean alive = false;
 
-
     protected float speed = 0.2f;
     protected int health = 20;
+    protected int reward = 50;
 
 
     public Critter(Texture texture, CritterManager manager){
@@ -64,6 +64,12 @@ public abstract class Critter extends Entity {
 
     public boolean isDead(){
         return !alive;
+    }
+    public void slow(float value){
+        speed *= value;
+    }
+    public int getReward() {
+        return reward;
     }
 
     public static Critter create(Type type, CritterManager manager){

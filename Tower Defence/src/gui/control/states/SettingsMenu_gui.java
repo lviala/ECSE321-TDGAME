@@ -2,12 +2,14 @@ package gui.control.states;
 
 import data.Textures;
 import gui.control.GUIState;
-import gui.elements.Tag;
+import gui.elements.non_interfaceable.Tag;
 import gui.elements.buttons.MenuButton;
 import gui.elements.buttons.Toggle;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Color;
 import util.vectors.vec2;
+
 
 /**
  * Created by Francis O'Brien - 1/7/2015 - 1:35 PM
@@ -37,8 +39,8 @@ public class SettingsMenu_gui extends GUIState {
         addElement(new Toggle(TOGGLE_2_ID, new vec2((controller.getGameContainer().getWidth() / 2) - (Textures.TOGGLE_OFF_TEXTURE.getWidth() / 2) + 200, 300 - (Textures.TOGGLE_OFF_TEXTURE.getHeight() / 2)), Textures.TOGGLE_OFF_TEXTURE, Textures.TOGGLE_ON_TEXTURE, fullscreen));
 
         /// Add tags
-        addElement(new Tag(new vec2((controller.getGameContainer().getWidth() / 2) - (Textures.VSYNC_TAG_TEXTURE.getWidth() / 2), 100 - (Textures.VSYNC_TAG_TEXTURE.getHeight() / 2)), Textures.VSYNC_TAG_TEXTURE));
-        addElement(new Tag(new vec2((controller.getGameContainer().getWidth() / 2) - (Textures.FULLSCREEN_TAG_TEXTURE.getWidth() / 2), 300 - (Textures.FULLSCREEN_TAG_TEXTURE.getHeight() / 2)), Textures.FULLSCREEN_TAG_TEXTURE));
+        addElement(new Tag(new vec2((controller.getGameContainer().getWidth() / 2) - (Textures.VSYNC_TAG_TEXTURE.getWidth() / 2), 100 - (Textures.VSYNC_TAG_TEXTURE.getHeight() / 2)), Textures.VSYNC_TAG_TEXTURE, new Color(160, 160, 160)));
+        addElement(new Tag(new vec2((controller.getGameContainer().getWidth() / 2) - (Textures.FULLSCREEN_TAG_TEXTURE.getWidth() / 2), 300 - (Textures.FULLSCREEN_TAG_TEXTURE.getHeight() / 2)), Textures.FULLSCREEN_TAG_TEXTURE, new Color(160, 160, 160)));
 
     }
 

@@ -20,7 +20,7 @@ public class MenuButton extends Button{
 
     @Override
     public void draw() {
-        if (mouseOver) texture.draw(position.x, position.y, mouseOverColor);
+        if (isMouseover) texture.draw(position.x, position.y, mouseOverColor);
         else texture.draw(position.x, position.y, idleColor);
     }
 

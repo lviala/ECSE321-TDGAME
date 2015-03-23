@@ -9,7 +9,7 @@ import gui.control.states.GUIStateIDs;
 import gui.control.states.MainMenu_gui;
 import gui.control.states.SettingsMenu_gui;
 import org.newdawn.slick.*;
-import util.Mousew;
+import util.MouseWrapper;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -18,7 +18,7 @@ public class Menu extends BasicGameState {
 
     private int stateID;
 
-    private Mousew mouse;
+    private MouseWrapper mouse;
     private GUIController guiController;
 
     public Menu(int ID){
@@ -32,7 +32,7 @@ public class Menu extends BasicGameState {
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
-        mouse = new Mousew(gameContainer.getHeight());
+        mouse = new MouseWrapper(gameContainer.getHeight());
 
         guiController = new GUIController(gameContainer, stateBasedGame, mouse);
         guiController.addState(new MainMenu_gui(GUIStateIDs.MAIN_MENU.ID));

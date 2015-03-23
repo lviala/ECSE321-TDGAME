@@ -1,14 +1,9 @@
 package gui.elements.buttons;
 
 import core.rendering.Texture;
-import gui.elements.Clikeable;
-import gui.elements.GUIElement;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Input;
-import util.Box;
 import util.vectors.vec2;
-
-import javax.xml.soap.Text;
 
 /**
  * Created by Francis O'Brien - 1/7/2015 - 2:07 PM
@@ -35,7 +30,7 @@ public class Toggle extends Button {
 
     @Override
     public void draw() {
-        if (mouseOver) texture.draw(position.x, position.y, mouseOverColor);
+        if (isMouseover) texture.draw(position.x, position.y, mouseOverColor);
         else texture.draw(position.x, position.y, idleColor);
     }
 
