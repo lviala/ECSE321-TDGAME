@@ -5,6 +5,7 @@
 package core.gamestates;
 
 import gui.control.GUIController;
+import gui.control.states.ControlsMenu_gui;
 import gui.control.states.GUIStateIDs;
 import gui.control.states.MainMenu_gui;
 import gui.control.states.SettingsMenu_gui;
@@ -37,6 +38,7 @@ public class Menu extends BasicGameState {
         guiController = new GUIController(gameContainer, stateBasedGame, mouse);
         guiController.addState(new MainMenu_gui(GUIStateIDs.MAIN_MENU.ID));
         guiController.addState(new SettingsMenu_gui(GUIStateIDs.SETTINGS.ID));
+        guiController.addState(new ControlsMenu_gui(GUIStateIDs.CONTROLS.ID));
         guiController.enterState(GUIStateIDs.MAIN_MENU.ID);
     }
 
@@ -49,7 +51,7 @@ public class Menu extends BasicGameState {
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
 
-        guiController.render();
+        guiController.render(graphics);
 
     }
 

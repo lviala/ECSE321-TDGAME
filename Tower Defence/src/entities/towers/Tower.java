@@ -8,6 +8,7 @@ import entities.projectiles.Projectile;
 import entities.towers.tower_types.RapidTower;
 import entities.towers.tower_types.SlowTower;
 import entities.towers.tower_types.SniperTower;
+import org.newdawn.slick.particles.ParticleSystem;
 import util.vectors.vec2;
 
 import java.util.ArrayList;
@@ -20,8 +21,8 @@ public abstract class Tower extends Entity {
 
     public static enum Type {
         SNIPER(100),
-        RAPID(100),
-        SLOW(300);
+        RAPID(400),
+        SLOW(200);
 
         private int baseCost;
 
@@ -36,27 +37,32 @@ public abstract class Tower extends Entity {
     }
 
 
-    private boolean hasTarget = false;
-    private Critter target;
-    private long lastShot = 0;
+    protected boolean hasTarget = false;
+    protected Critter target;
+    protected long lastShot = 0;
 
     protected int totalCost = 0;
     protected int range = 500;
     protected int fireRate = 1000;
     protected Projectile.Type projectile_type;
 
-    private ArrayList<Projectile> projectiles;
+    protected ArrayList<Projectile> projectiles;
+    protected ArrayList<Projectile> projectilesToRemove;
 
-    private CritterManager critterManager;
+    protected CritterManager critterManager;
+    protected ParticleSystem particleSystem;
 
-    public Tower(Texture texture, vec2 pos, CritterManager critterManager, Projectile.Type type, int baseCost) {
-        super(texture);
+    public Tower(Texture texture, vec2 pos, CritterManager critterManager, ParticleSystem particleSystem, Projectile.Type type, int baseCost) {
+        super(texture.deepCopy());
         this.pos.setSelf(pos);
         totalCost += baseCost;
 
         this.critterManager = critterManager;
+        this.particleSystem = particleSystem;
+
         this.projectile_type = type;
         projectiles = new ArrayList<Projectile>();
+        projectilesToRemove = new ArrayList<Projectile>();
     }
 
     @Override
@@ -83,35 +89,59 @@ public abstract class Tower extends Entity {
         for (Projectile p : projectiles){
             p.update(delta);
         }
+
+        for (Projectile p : projectilesToRemove){
+            projectiles.remove(p);
+        }
     }
 
     @Override
     public void draw(){
+
+        if (target != null){
+            texture.setRotation(target.getPos().getAngle(pos) + 180);
+        }
+
         texture.draw(pos.x, pos.y);
         for (Projectile p : projectiles){
             p.draw();
         }
     }
 
-    public static Tower create(Type type, vec2 pos, CritterManager manager){
+    public static Tower create(Type type, vec2 pos, CritterManager manager, ParticleSystem particleSystem){
         switch (type){
             case SNIPER:
-                return new SniperTower(pos, manager, Projectile.Type.REGULAR, type.cost());
+                return new SniperTower(pos, manager, particleSystem, Projectile.Type.REGULAR, type.cost());
             case RAPID:
-                return new RapidTower(pos, manager, Projectile.Type.REGULAR, type.cost());
+                return new RapidTower(pos, manager, particleSystem, Projectile.Type.RAPID, type.cost());
             case SLOW:
-                return new SlowTower(pos, manager, Projectile.Type.SLOW, type.cost());
+                return new SlowTower(pos, manager, particleSystem, Projectile.Type.SLOW, type.cost());
         }
 
         throw new RuntimeException("Critter type does not exist");
     }
 
     public void fire(){
-        projectiles.add(Projectile.newProjectile(box.centre(), target, projectile_type));
-
+        projectiles.add(Projectile.newProjectile(box.centre(), this, target, projectile_type, particleSystem));
     }
 
     public int getTotalCost(){
         return totalCost;
+    }
+
+    public int getSellValue(){
+        return (int)(totalCost * 0.75);
+    }
+
+    public void removeProjectile(Projectile projectile){
+        projectilesToRemove.add(projectile);
+    }
+
+    public void destroyTower(){
+        for (Projectile p : projectiles){
+            p.destroy();
+        }
+        projectiles.clear();
+        projectilesToRemove.clear();
     }
 }

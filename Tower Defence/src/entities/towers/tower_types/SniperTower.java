@@ -4,6 +4,7 @@ import data.Textures;
 import entities.critters.CritterManager;
 import entities.projectiles.Projectile;
 import entities.towers.Tower;
+import org.newdawn.slick.particles.ParticleSystem;
 import util.vectors.vec2;
 
 /**
@@ -11,7 +12,7 @@ import util.vectors.vec2;
  */
 
 public class SniperTower extends Tower {
-    public SniperTower(vec2 pos, CritterManager critterManager, Projectile.Type type, int baseCost) {
-        super(Textures.SNIPER_TOWER_TEXTURE, pos, critterManager, type, baseCost);
+    public SniperTower(vec2 pos, CritterManager critterManager, ParticleSystem particleSystem, Projectile.Type type, int baseCost) {
+        super(Textures.SNIPER_TOWER_TEXTURE, pos, critterManager, particleSystem, type, baseCost);
     }
 }

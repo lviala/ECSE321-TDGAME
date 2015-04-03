@@ -9,6 +9,7 @@ public enum GUIStateIDs {
     /// Menu States ///
     MAIN_MENU(0),
     SETTINGS(1),
+    CONTROLS(2),
 
     /// Play States ///
     PLAY_MAIN(2);

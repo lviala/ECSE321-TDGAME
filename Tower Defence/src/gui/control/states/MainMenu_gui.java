@@ -3,7 +3,6 @@ package gui.control.states;
 import core.Core;
 import data.Textures;
 import gui.control.GUIState;
-import gui.elements.buttons.Button;
 import gui.elements.buttons.MenuButton;
 import org.newdawn.slick.Input;
 import util.vectors.vec2;
@@ -16,7 +15,8 @@ public class MainMenu_gui extends GUIState {
 
     private final int PLAY_ID = 0;
     private final int SETTINGS_ID = 1;
-    private final int EXIT_ID = 2;
+    private final int CONTROLS_ID = 2;
+    private final int EXIT_ID = 3;
 
 
 
@@ -28,7 +28,8 @@ public class MainMenu_gui extends GUIState {
     public void init() {
         addElement(new MenuButton(PLAY_ID, new vec2((controller.getGameContainer().getWidth() / 2) - (Textures.PLAY_BUTTON_TEXTURE.getWidth() / 2), 100), Textures.PLAY_BUTTON_TEXTURE));
         addElement(new MenuButton(SETTINGS_ID, new vec2((controller.getGameContainer().getWidth() / 2) - (Textures.SETTINGS_BUTTON_TEXTURE.getWidth() / 2), 250), Textures.SETTINGS_BUTTON_TEXTURE));
-        addElement(new MenuButton(EXIT_ID, new vec2((controller.getGameContainer().getWidth() / 2) - (Textures.EXIT_BUTTON_TEXTURE.getWidth() / 2), 400), Textures.EXIT_BUTTON_TEXTURE));
+        addElement(new MenuButton(CONTROLS_ID, new vec2((controller.getGameContainer().getWidth() / 2) - (Textures.CONTROLS_BUTTON_TEXTURE.getWidth() / 2), 400), Textures.CONTROLS_BUTTON_TEXTURE));
+        addElement(new MenuButton(EXIT_ID, new vec2((controller.getGameContainer().getWidth() / 2) - (Textures.EXIT_BUTTON_TEXTURE.getWidth() / 2), 550), Textures.EXIT_BUTTON_TEXTURE));
     }
 
     @Override
@@ -52,6 +53,11 @@ public class MainMenu_gui extends GUIState {
             case SETTINGS_ID:
                 if (mouseButton == Input.MOUSE_LEFT_BUTTON){
                     controller.enterState(GUIStateIDs.SETTINGS.ID);
+                }
+                break;
+            case CONTROLS_ID:
+                if (mouseButton == Input.MOUSE_LEFT_BUTTON){
+                    controller.enterState(GUIStateIDs.CONTROLS.ID);
                 }
                 break;
             case EXIT_ID:

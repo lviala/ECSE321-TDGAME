@@ -10,7 +10,8 @@ import entities.critters.CritterManager;
 
 public class NormalCritter extends Critter {
 
-    public NormalCritter(Texture texture, CritterManager manager) {
-        super(texture, manager);
+    public NormalCritter(Texture texture, CritterManager manager, int level) {
+        super(texture, manager, level);
+        reward = 25;
     }
 }

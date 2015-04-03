@@ -46,6 +46,7 @@ public class TowerManager {
 
     private void removeTowers() {
         for (Tower t : toBeRemoved){
+            t.destroyTower();
             towers.remove(t);
         }
 
@@ -59,7 +60,6 @@ public class TowerManager {
     }
 
     public void addTower(Tower tower){
-        System.out.println(tower.getPos().x + " ; " + tower.getPos().y);
         toBeAdded.add(tower);
     }
 

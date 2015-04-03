@@ -1,6 +1,7 @@
 package gui.control;
 
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.StateBasedGame;
 import util.MouseWrapper;
 
@@ -30,12 +31,12 @@ public class GUIController {
         currentstate.update();
     }
 
-    public void render(){
-        currentstate.draw();
+    public void render(Graphics graphics){
+        currentstate.draw(graphics);
     }
 
     public void mouseClicked(int mouseButton, int clickCount){
-        currentstate.mouseClicked(mouseButton, clickCount);
+        currentstate.mouseClicked(mouseButton, clickCount, false);
     }
 
     public void addState(GUIState state){

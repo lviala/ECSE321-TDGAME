@@ -4,6 +4,7 @@
 
 package core.gamestates;
 
+import core.Core;
 import data.PNGMaps;
 import data.Textures;
 import entities.Player;
@@ -15,10 +16,7 @@ import gui.control.states.GUIStateIDs;
 import gui.control.states.PlayMain_gui;
 import map.Tile;
 import map.TileMap;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
 import org.newdawn.slick.particles.ParticleSystem;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -34,11 +32,14 @@ public class Play extends BasicGameState {
     private MouseWrapper mouse;
 
     private GameContainer gameContainer;
+    private StateBasedGame stateBasedGame;
     private CritterManager critterManager;
     private TowerManager towerManager;
     private GUIController guiController;
 
     private ParticleSystem particleSystem;
+
+    private boolean lost = false;
 
 
     /// Testing ///
@@ -61,6 +62,7 @@ public class Play extends BasicGameState {
         mouse = new MouseWrapper(gameContainer.getHeight());
         guiController = new GUIController(gameContainer, stateBasedGame, mouse);
         this.gameContainer = gameContainer;
+        this.stateBasedGame = stateBasedGame;
     }
 
     @Override
@@ -69,7 +71,33 @@ public class Play extends BasicGameState {
         critterManager.render();
         towerManager.render();
         particleSystem.render();
-        guiController.render();
+        guiController.render(graphics);
+
+        graphics.setColor(Color.black);
+        graphics.drawString("Cash: " + player.getCurrency(), 10, 600);
+        graphics.drawString("Lives: " + player.getLives(), 10, 625);
+        graphics.drawString("Wave: " + critterManager.getWaveNumber(), 10, 650);
+        graphics.drawString("Health Multiplier: " + (float)(1.0f + (critterManager.getWaveNumber() - 1.0f)/5.0f), 10, 700);
+
+
+        graphics.drawString("" + Tower.Type.SNIPER.cost(), 215, 670);
+        graphics.drawString("" + Tower.Type.SLOW.cost(), 365, 670);
+        graphics.drawString("" + Tower.Type.RAPID.cost(), 515, 670);
+
+        graphics.drawString("SNIPER", 205, 580);
+        graphics.drawString("SLOW", 362, 580);
+        graphics.drawString("RAPID", 509, 580);
+
+
+        if (lost){
+            graphics.setColor(Color.black);
+            graphics.fillRect(gameContainer.getWidth() / 2 - 150, gameContainer.getHeight() / 2 - 50, 300, 100);
+            graphics.setColor(Color.white);
+            graphics.drawString("GAME OVER", gameContainer.getWidth() / 2 - 43, gameContainer.getHeight() / 2 - 30);
+            graphics.drawString("Press ESC to close", gameContainer.getWidth() / 2 - 100, gameContainer.getHeight() / 2 + 0 );
+            graphics.drawString("Press SPACE to restart", gameContainer.getWidth() / 2 - 100, gameContainer.getHeight() / 2 + 14 );
+            graphics.drawString("Press ENTER for Main Menu", gameContainer.getWidth() / 2 - 100, gameContainer.getHeight() / 2 + 28 );
+        }
 
         /// Testing ///
 
@@ -81,12 +109,13 @@ public class Play extends BasicGameState {
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int delta) throws SlickException {
-        mouse.update();
-        guiController.update();
-        critterManager.update(delta);
-        towerManager.update(delta);
-        particleSystem.update(delta);
-
+        if (!lost) {
+            mouse.update();
+            guiController.update();
+            critterManager.update(delta);
+            towerManager.update(delta);
+            particleSystem.update(delta);
+        }
         /// Testing ///
 
 
@@ -105,19 +134,31 @@ public class Play extends BasicGameState {
                 critterManager.startNextWave();
         }
 
+        if (lost){
+            switch (key){
+                case Input.KEY_SPACE:
+                    stateBasedGame.enterState(Core.PLAY);
+                    break;
+                case Input.KEY_ENTER:
+                    stateBasedGame.enterState(Core.MENU);
+                    break;
+            }
+        }
+
+
     }
 
     @Override
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
         super.enter(container, game);
-        player = new Player(1000, 30);
+        lost = false;
+        player = new Player(400, 20, this);
         map = new TileMap(PNGMaps.testmap_3);
-        critterManager = new CritterManager("res/files/sample_level.txt", map.getStartTile(), map.getEndTile());
+        critterManager = new CritterManager("res/files/sample_level.txt", map.getStartTile(), map.getEndTile(), this);
         towerManager = new TowerManager(map);
         particleSystem = ParticleUtilities.createSystem(Textures.SQAURE_PARTICLE_TEXTURE, 2000);
         guiController.addState(new PlayMain_gui(GUIStateIDs.PLAY_MAIN.ID, player, map, this));
         guiController.enterState(GUIStateIDs.PLAY_MAIN.ID);
-
 
 
         /// Testing ///
@@ -134,14 +175,32 @@ public class Play extends BasicGameState {
     }
 
     public void addTower(Tower.Type type){
-        if (player.getCurrency() >= type.cost()) {
+        if (player.getCurrency() >= type.cost() && map.withinMap(mouse.getPosition())) {
             Tile tile = map.getTile(mouse.getPosition().x, mouse.getPosition().y);
-            Tower tower = Tower.create(type, tile.getPosition(), critterManager);
+            Tower tower = Tower.create(type, tile.getPosition(), critterManager, particleSystem);
 
             if (tile.placeTower(tower)) {
                 towerManager.addTower(tower);
                 player.updateCurrency(-type.cost());
             }
         }
+    }
+
+    public void sellTower(Tile tile) {
+        towerManager.removeTower(tile.getTower());
+        player.updateCurrency(tile.getTower().getSellValue());
+        tile.removeTower();
+    }
+
+    public void removeLife() {
+        player.removeLife();
+    }
+
+    public void rewardPlayer(int value){
+        player.updateCurrency(value);
+    }
+
+    public void lostGame() {
+        lost = true;
     }
 }

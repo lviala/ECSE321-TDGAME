@@ -3,6 +3,9 @@ package entities.projectiles.projectile_types;
 import core.rendering.Texture;
 import entities.critters.Critter;
 import entities.projectiles.Projectile;
+import entities.towers.Tower;
+import org.newdawn.slick.particles.ParticleSystem;
+import particles.ParticleUtilities;
 import util.vectors.vec2;
 
 /**
@@ -11,8 +14,10 @@ import util.vectors.vec2;
 
 public class RegularProjectile extends Projectile {
 
-    public RegularProjectile(Texture texture, vec2 pos, Critter target) {
-        super(texture, pos, target);
+    public RegularProjectile(Texture texture, vec2 pos, Tower tower, Critter target, ParticleSystem particleSystem) {
+        super(texture, pos, tower, target, particleSystem);
+        emitter = ParticleUtilities.createSniperEmitter(pos);
+        particleSystem.addEmitter(emitter);
     }
 
     @Override

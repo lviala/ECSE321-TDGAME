@@ -1,8 +1,7 @@
 package particles;
 
 import core.rendering.Texture;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.particles.ParticleEmitter;
+import org.newdawn.slick.particles.ConfigurableEmitter;
 import org.newdawn.slick.particles.ParticleIO;
 import org.newdawn.slick.particles.ParticleSystem;
 import util.vectors.vec2;
@@ -23,15 +22,27 @@ public class ParticleUtilities {
         return system;
     }
 
-    public static ParticleEmitter createEmitter(String filepath, vec2 pos){
-        ParticleEmitter emitter;
+    public static ConfigurableEmitter createEmitter(String filepath, vec2 pos){
+        ConfigurableEmitter emitter;
         try {
             File xmlFile = new File(filepath);
             emitter = ParticleIO.loadEmitter(xmlFile);
+            emitter.setPosition(pos.x, pos.y, false);
             return emitter;
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static ConfigurableEmitter createSniperEmitter(vec2 pos){
+        return createEmitter("data/sniper_emitter.xml", pos);
+    }
+
+    public static ConfigurableEmitter createRapidEmitter(vec2 pos){
+        return createEmitter("data/rapid_emitter.xml", pos);
+    }
+    public static ConfigurableEmitter createSlowEmitter(vec2 pos){
+        return createEmitter("data/slow_emitter.xml", pos);
     }
 }

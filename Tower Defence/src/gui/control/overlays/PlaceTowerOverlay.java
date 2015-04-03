@@ -5,6 +5,7 @@ import gui.control.GUIState;
 import gui.control.states.PlayMain_gui;
 import gui.elements.buttons.DoublePNGButton;
 import gui.elements.non_interfaceable.TowerAlpha;
+import org.newdawn.slick.Input;
 import util.MouseWrapper;
 
 /**
@@ -40,7 +41,8 @@ public class PlaceTowerOverlay extends GUIOverlay {
 
     @Override
     public void customMouseClicked(int mouseButton, int clickCount) {
-        ((PlayMain_gui) parentState).buyTower(towerAlpha.getType());
+        if (mouseButton == Input.MOUSE_LEFT_BUTTON) ((PlayMain_gui) parentState).buyTower(towerAlpha.getType());
+        else close();
     }
 
     @Override

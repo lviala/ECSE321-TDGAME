@@ -1,17 +1,14 @@
 package util.testing.particles;
 
-import java.io.File;
-
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
+import org.lwjgl.input.Mouse;
+import org.newdawn.slick.*;
 import org.newdawn.slick.particles.ConfigurableEmitter;
 import org.newdawn.slick.particles.ParticleIO;
 import org.newdawn.slick.particles.ParticleSystem;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+
+import java.io.File;
 
 public class ParticleTestState extends BasicGameState {
 
@@ -34,20 +31,23 @@ public class ParticleTestState extends BasicGameState {
 		system.setBlendingMode(ParticleSystem.BLEND_ADDITIVE);	
 	}
 
-
+float x = 300;
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
 		system.update(delta);
-
+        //emitter.setPosition(x, 200);
+        x+= 0.0;
 		//move the particle emitter left and right but never both simultaneously 
 		if(gc.getInput().isKeyDown(Input.KEY_LEFT)){
-			emitter.setPosition(emitter.getX()-((float)delta/8),emitter.getY());
+			emitter.setPosition(emitter.getX() - ((float) delta / 8), emitter.getY());
 		}else if(gc.getInput().isKeyDown(Input.KEY_RIGHT)){
 			emitter.setPosition(emitter.getX()+((float)delta/8),emitter.getY());
 		}
-		
+
+        emitter.setPosition(Mouse.getX(), Mouse.getY(), false);
+
 		//move the particle emitter up and down but never simultaneously
 		if(gc.getInput().isKeyDown(Input.KEY_UP)){
-			emitter.setPosition(emitter.getX(),emitter.getY()-((float)delta/8));
+			emitter.setPosition(emitter.getX(),100);
 		}else if(gc.getInput().isKeyDown(Input.KEY_DOWN)){
 			emitter.setPosition(emitter.getX(),emitter.getY()+((float)delta/8));
 		}

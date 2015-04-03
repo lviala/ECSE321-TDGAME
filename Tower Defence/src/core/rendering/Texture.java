@@ -27,6 +27,10 @@ public class Texture {
         image = loadImage(ss, i ,j);
     }
 
+    public Texture(Image image) {
+        this.image = image;
+    }
+
     /// Draw the image to the buffer
     public void draw(float x, float y){
         image.draw(x, y);
@@ -52,6 +56,10 @@ public class Texture {
     public int getHeight(){ return image.getHeight(); }
     public Image getImage(){ return image; }
 
+    public void setRotation(float angle){
+        image.setRotation(angle);
+    }
+
 
 
     /// Private functions ///
@@ -75,5 +83,7 @@ public class Texture {
     }
 
 
-
+    public Texture deepCopy() {
+        return new Texture(image.copy());
+    }
 }

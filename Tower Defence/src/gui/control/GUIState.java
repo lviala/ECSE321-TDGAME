@@ -2,6 +2,7 @@ package gui.control;
 
 import gui.elements.GUIElement;
 import gui.elements.buttons.Button;
+import org.newdawn.slick.Graphics;
 import util.MouseWrapper;
 
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public abstract class GUIState {
         }
     }
 
-    public void mouseClicked(int mouseButton, int clickCount){
+    public void mouseClicked(int mouseButton, int clickCount, boolean fromOverlay){
 
         if (currentOverlay != null){
             currentOverlay.mouseClicked(mouseButton, clickCount);
@@ -66,7 +67,7 @@ public abstract class GUIState {
         }
     }
 
-    public void draw(){
+    public void draw(Graphics graphics){
         for (GUIElement e : elements){
             e.draw();
         }

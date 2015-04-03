@@ -10,7 +10,9 @@ import entities.critters.CritterManager;
 
 public class FastCritter extends Critter {
 
-    public FastCritter(Texture texture, CritterManager manager) {
-        super(texture, manager);
+    public FastCritter(Texture texture, CritterManager manager, int level) {
+        super(texture, manager, level);
+        reward = 50;
+        DEFAULT_SPEED *= 1.6;
     }
 }

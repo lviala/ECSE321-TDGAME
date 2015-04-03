@@ -1,10 +1,10 @@
 package entities.critters;
 
+import core.gamestates.Play;
 import map.path.PathTile;
 import util.fileIO.Reader;
 import util.fileIO.StringUtilities;
 
-import java.time.chrono.IsoChronology;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Stack;
@@ -27,15 +27,19 @@ public class CritterManager {
     private PathTile start_tile, end_tile;
     private boolean waveStarted = false;
     private boolean levelEnded = false;
-    private int waveCritters = 0;
+    private int waveNumber = 0;
 
-    public CritterManager(String level_wave_file, PathTile start_tile, PathTile end_tile){
+    private Play playState;
+
+    public CritterManager(String level_wave_file, PathTile start_tile, PathTile end_tile, Play playState){
         this.start_tile = start_tile;
         this.end_tile = end_tile;
 
         liveCritters = new LinkedList<Critter>();
         unspawnedCritters = new Stack<Critter>();
         toBeRemoved = new ArrayList<Critter>();
+
+        this.playState = playState;
 
         constructLevelWaves(level_wave_file);
     }
@@ -70,6 +74,7 @@ public class CritterManager {
     }
 
     public void startNextWave(){
+        waveNumber++;
         if (!levelEnded && !waveStarted) {
             waveStarted = true;
             loadNextWave();
@@ -78,11 +83,12 @@ public class CritterManager {
     }
 
     public void kill(Critter critter){
+        playState.rewardPlayer(critter.getReward());
         toBeRemoved.add(critter);
     }
 
     public void reachedEnd(Critter critter){
-        // Remove life
+        playState.removeLife();
         toBeRemoved.add(critter);
     }
 
@@ -107,9 +113,8 @@ public class CritterManager {
 
         current_wave = waves.pop();
 
-        waveCritters = current_wave.critters.size();
         for (int i = current_wave.critters.size() - 1; i >= 0; i--){
-            unspawnedCritters.push(Critter.create(current_wave.critters.get(i), this));
+            unspawnedCritters.push(Critter.create(current_wave.critters.get(i), this, waveNumber));
         }
         spawnNext();
     }
@@ -145,4 +150,7 @@ public class CritterManager {
         return liveCritters;
     }
 
+    public int getWaveNumber(){
+        return waveNumber;
+    }
 }

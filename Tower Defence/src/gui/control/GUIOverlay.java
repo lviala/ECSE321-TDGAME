@@ -59,7 +59,6 @@ public abstract class GUIOverlay {
         if (!buttonClicked){
             customMouseClicked(mouseButton, clickCount);
             this.close();
-            parentState.mouseClicked(mouseButton, clickCount);
         }
     }
 

@@ -1,6 +1,7 @@
 package gui.elements.non_interfaceable;
 
 import data.Textures;
+import entities.Player;
 import entities.towers.Tower;
 import gui.elements.GUIElement;
 import map.TileMap;
@@ -19,21 +20,28 @@ public class TowerAlpha extends GUIElement {
     private Tower.Type type;
     private TileMap map;
     private MouseWrapper mouse;
+    private Player player;
 
-    private static Color legal = new Color(0, 100, 255, 200);
+    private static Color legal = new Color(0, 200, 0, 200);
     private static Color illegal = new Color(255, 0, 0, 200);
+    private static Color lackingFunds = new Color(255, 0, 0, 200);
 
-    public TowerAlpha (Tower.Type towerType, TileMap map, MouseWrapper mouse){
+    public TowerAlpha (Tower.Type towerType, TileMap map, MouseWrapper mouse, Player player){
         super(mouse.getPosition(), null);
+
+        this.player = player;
 
         this.type = towerType;
         switch (towerType){
             case SNIPER:
                 super.texture = Textures.SNIPER_TOWER_TEXTURE;
+                break;
             case RAPID:
                 super.texture = Textures.RAPID_TOWER_TEXTURE;
+                break;
             case SLOW:
                 super.texture = Textures.SLOW_TOWER_TEXTURE;
+                break;
         }
 
 
@@ -56,7 +64,11 @@ public class TowerAlpha extends GUIElement {
     @Override
     public void draw() {
         if (buildablePosition) {
-            texture.drawCentre(position.x, position.y, legal);
+            if (player.getCurrency() >= type.cost()) {
+                texture.drawCentre(position.x, position.y, legal);
+            }else{
+                texture.drawCentre(position.x, position.y, lackingFunds);
+            }
         }else{
             texture.drawCentre(position.x, position.y, illegal);
         }

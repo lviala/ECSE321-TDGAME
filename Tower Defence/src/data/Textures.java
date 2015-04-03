@@ -17,6 +17,7 @@ public final class Textures {
     public static final Texture RED_DOT_TEXTURE = new Texture("/res/textures/entities/red_dot.png"); ///< Test critter
     public static final Texture BLUE_DOT_TEXTURE = new Texture("/res/textures/entities/blue_dot.png"); ///< Test critter
     public static final Texture UGLY_CREEP_TEXTURE = new Texture("/res/textures/entities/damn_ugly_creep.png"); ///< Test critter
+    public static final Texture FAST_CREEP_TEXTURE = new Texture("/res/textures/entities/fast_ugly_creep.png"); ///< Test critter
     public static final Texture SHIT_TOWER_TEXTURE = new Texture("/res/textures/entities/shit_tower.png"); ///< Test critter
 
     public static final Texture SNIPER_TOWER_TEXTURE = new Texture("res/textures/entities/sniper_tower.png"); ///< Test tower
@@ -36,14 +37,26 @@ public final class Textures {
         /// Main menu
     public static final Texture PLAY_BUTTON_TEXTURE = new Texture("/res/textures/gui/playbutton.png");
     public static final Texture SETTINGS_BUTTON_TEXTURE = new Texture("/res/textures/gui/settingsbutton.png");
+    public static final Texture CONTROLS_BUTTON_TEXTURE = new Texture("/res/textures/gui/controlsbutton.png");
     public static final Texture EXIT_BUTTON_TEXTURE = new Texture("/res/textures/gui/exitbutton.png");
     public static final Texture BACK_BUTTON_TEXTURE = new Texture("/res/textures/gui/backbutton.png");
 
         /// Play GUI
+
+            ///Sniper tower button
     public static final Texture SNIPER_BUTTON_IDLE = new Texture("/res/textures/gui/play_state/sniper_tower_button_id.png");
     public static final Texture SNIPER_BUTTON_MOUSEOVER = new Texture("/res/textures/gui/play_state/sniper_tower_button_mo.png");
     public static final Texture SNIPER_BUTTON_DOWN = new Texture("/res/textures/gui/play_state/sniper_tower_button_down.png");
-    public static final Texture SNIPER_BUTTON_DOWNALT = new Texture("/res/textures/gui/play_state/sniper_tower_button_darker.png");
+
+            ///Slow tower button
+    public static final Texture SLOW_BUTTON_IDLE = new Texture("/res/textures/gui/play_state/slow_tower_button_id.png");
+    public static final Texture SLOW_BUTTON_MOUSEOVER = new Texture("/res/textures/gui/play_state/slow_tower_button_mo.png");
+    public static final Texture SLOW_BUTTON_DOWN = new Texture("/res/textures/gui/play_state/slow_tower_button_down.png");
+
+            ///Rapid tower button
+    public static final Texture RAPID_BUTTON_IDLE = new Texture("/res/textures/gui/play_state/rapid_tower_button_id.png");
+    public static final Texture RAPID_BUTTON_MOUSEOVER = new Texture("/res/textures/gui/play_state/rapid_tower_button_mo.png");
+    public static final Texture RAPID_BUTTON_DOWN = new Texture("/res/textures/gui/play_state/rapid_tower_button_down.png");
 
     /// Toggle textures
     public static final Texture TOGGLE_ON_TEXTURE = new Texture("/res/textures/gui/toggle_on.png");

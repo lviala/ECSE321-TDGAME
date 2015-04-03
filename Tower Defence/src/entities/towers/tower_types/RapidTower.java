@@ -4,6 +4,7 @@ import data.Textures;
 import entities.critters.CritterManager;
 import entities.projectiles.Projectile;
 import entities.towers.Tower;
+import org.newdawn.slick.particles.ParticleSystem;
 import util.vectors.vec2;
 
 /**
@@ -11,10 +12,10 @@ import util.vectors.vec2;
  */
 
 public class RapidTower extends Tower {
-    public RapidTower(vec2 pos, CritterManager critterManager, Projectile.Type type, int baseCost) {
-        super(Textures.RAPID_TOWER_TEXTURE, pos, critterManager, type, baseCost);
+    public RapidTower(vec2 pos, CritterManager critterManager, ParticleSystem particleSystem, Projectile.Type type, int baseCost) {
+        super(Textures.RAPID_TOWER_TEXTURE, pos, critterManager, particleSystem, type, baseCost);
 
-        range /= 3;
+        range /= 2.5;
         fireRate /= 7;
 
     }

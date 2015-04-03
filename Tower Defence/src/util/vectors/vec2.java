@@ -32,6 +32,10 @@ public class vec2 {
         y = vec.y;
     }
 
+    public vec2 clone(){
+        return new vec2(x, y);
+    }
+
     /// Returns the length of the vector
     public float length() {
         return (float) Math.sqrt((x*x) + (y*y));
@@ -91,4 +95,19 @@ public class vec2 {
         x *= value;
         y *= value;
     }
+
+    public float getDirection(){
+        if (y == 0){
+            if (x >= 0) return 0;
+            else return 180;
+        }
+
+        return (float) Math.toDegrees(Math.atan2(x, -y));
+    }
+
+    public float getAngle(vec2 point){
+        vec2 vector = new vec2(point.x - x, point.y - y);
+        return vector.getDirection();
+    }
+
 }
