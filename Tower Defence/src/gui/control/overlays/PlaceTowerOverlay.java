@@ -2,7 +2,7 @@ package gui.control.overlays;
 
 import gui.control.GUIOverlay;
 import gui.control.GUIState;
-import gui.control.states.PlayMain_gui;
+import gui.control.states.Play_gui;
 import gui.elements.buttons.DoublePNGButton;
 import gui.elements.non_interfaceable.TowerAlpha;
 import org.newdawn.slick.Input;
@@ -41,7 +41,7 @@ public class PlaceTowerOverlay extends GUIOverlay {
 
     @Override
     public void customMouseClicked(int mouseButton, int clickCount) {
-        if (mouseButton == Input.MOUSE_LEFT_BUTTON) ((PlayMain_gui) parentState).buyTower(towerAlpha.getType());
+        if (mouseButton == Input.MOUSE_LEFT_BUTTON) ((Play_gui) parentState).buyTower(towerAlpha.getType());
         else close();
     }
 

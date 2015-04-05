@@ -2,8 +2,10 @@ package core;
 
 import core.gamestates.Menu;
 import core.gamestates.Play;
+import map.MapGenerator;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.tests.CanvasContainerTest;
 
 /**
  * * Created by Francis O'Brien - 1/7/2015 - 12:13 AM
@@ -30,20 +32,21 @@ public class Core extends StateBasedGame{
 
     /// Window dimensions
     public static final int WIDTH = 1280; ///< Default resolution, game will be scalable
-    public static final int HEIGHT = WIDTH * 9 / 16; ///<Maintain a 16:9 aspect ratio
+    public static final int HEIGHT = (WIDTH * 9) / 16; ///<Maintain a 16:9 aspect ratio
 
     /// Enumeration of game states
     public static final int MENU = 0;
     public static final int PLAY = 1;
 
+    public static AppGameContainer appgc;
 
     public static void main(String[] args) {
         try{
             /// Generate window and set default graphics options
-            AppGameContainer appgc = new AppGameContainer(new ScalableGame(new Core(FULL_TITLE), WIDTH, HEIGHT, true)); ///< Give instance of this class (extension of StateBasedGame) to Slick2Ds game container.
+            appgc = new AppGameContainer(new ScalableGame(new Core(FULL_TITLE), WIDTH, HEIGHT, false)); ///< Give instance of this class (extension of StateBasedGame) to Slick2Ds game container.
                                                                                                                         /// Using ScalableGame allows us to resize and maintain aspect ratio
             appgc.setDisplayMode(WIDTH, HEIGHT, false); ///< Set up initial display (window) properties: width, height, fullscreen (initialized to false)
-            appgc.setShowFPS(true); ///< Enable show FPS
+            appgc.setShowFPS(false); ///< Enable show FPS
             appgc.setVSync(false); ///< Disable Vsync for testing purposes (we can see how certain features affect relative FPS)
             appgc.setAlwaysRender(true); ///< Enables rendering when other windows are active
             appgc.start();

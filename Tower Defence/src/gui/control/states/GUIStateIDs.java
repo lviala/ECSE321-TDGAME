@@ -12,7 +12,12 @@ public enum GUIStateIDs {
     CONTROLS(2),
 
     /// Play States ///
-    PLAY_MAIN(2);
+    PLAY_MAIN(3),
+
+    ///Map Select///
+    MAP_TYPE(4),
+    RANDOM_SELECT(5),
+    MAP_SELECT(6);
 
     public final int ID;
 

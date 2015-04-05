@@ -47,7 +47,7 @@ public class MainMenu_gui extends GUIState {
         switch (buttonID){
             case PLAY_ID:
                 if (mouseButton == Input.MOUSE_LEFT_BUTTON){
-                    controller.getStateBasedGame().enterState(Core.PLAY);
+                    controller.enterState(GUIStateIDs.MAP_TYPE.ID);
                 }
                 break;
             case SETTINGS_ID:

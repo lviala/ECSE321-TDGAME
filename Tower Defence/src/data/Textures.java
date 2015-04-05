@@ -13,12 +13,10 @@ public final class Textures {
     private Textures() {} ///< This is a static class, a private constructor prevents any instance being created
 
     /// Entity textures
-    public static final Texture PLAYER_TEXTURE = new Texture("/res/textures/entities/player.png"); ///< Test player
     public static final Texture RED_DOT_TEXTURE = new Texture("/res/textures/entities/red_dot.png"); ///< Test critter
     public static final Texture BLUE_DOT_TEXTURE = new Texture("/res/textures/entities/blue_dot.png"); ///< Test critter
     public static final Texture UGLY_CREEP_TEXTURE = new Texture("/res/textures/entities/damn_ugly_creep.png"); ///< Test critter
     public static final Texture FAST_CREEP_TEXTURE = new Texture("/res/textures/entities/fast_ugly_creep.png"); ///< Test critter
-    public static final Texture SHIT_TOWER_TEXTURE = new Texture("/res/textures/entities/shit_tower.png"); ///< Test critter
 
     public static final Texture SNIPER_TOWER_TEXTURE = new Texture("res/textures/entities/sniper_tower.png"); ///< Test tower
     public static final Texture SLOW_TOWER_TEXTURE = new Texture("res/textures/entities/slow_tower.png"); ///< Test tower
@@ -41,7 +39,20 @@ public final class Textures {
     public static final Texture EXIT_BUTTON_TEXTURE = new Texture("/res/textures/gui/exitbutton.png");
     public static final Texture BACK_BUTTON_TEXTURE = new Texture("/res/textures/gui/backbutton.png");
 
-        /// Play GUI
+        ///Map Selection
+    public static final Texture RANDOM_BUTTON_TEXTURE = new Texture("/res/textures/gui/random_button.png");
+    public static final Texture PREMADE_BUTTON_TEXTURE = new Texture("/res/textures/gui/premade_button.png");
+
+    public static final Texture RIGHT_ARROW_IDLE = new Texture("/res/textures/gui/map_select/right_arrow_idle.png");
+    public static final Texture RIGHT_ARROW_MO = new Texture("/res/textures/gui/map_select/right_arrow_mo.png");
+    public static final Texture LEFT_ARROW_IDLE = new Texture("/res/textures/gui/map_select/left_arrow_idle.png");
+    public static final Texture LEFT_ARROW_MO = new Texture("/res/textures/gui/map_select/left_arrow_mo.png");
+
+    public static final Texture LARGE_BUTTON = new Texture("/res/textures/gui/large_button.png");
+    public static final Texture MEDIUM_BUTTON = new Texture("/res/textures/gui/medium_button.png");
+    public static final Texture SMALL_BUTTON = new Texture("/res/textures/gui/small_button.png");
+
+    /// Play GUI
 
             ///Sniper tower button
     public static final Texture SNIPER_BUTTON_IDLE = new Texture("/res/textures/gui/play_state/sniper_tower_button_id.png");

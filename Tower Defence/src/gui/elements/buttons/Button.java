@@ -1,6 +1,7 @@
 package gui.elements.buttons;
 
 import core.rendering.Texture;
+import gui.control.GUIState;
 import gui.elements.Clikeable;
 import gui.elements.GUIElement;
 import org.newdawn.slick.Input;

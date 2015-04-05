@@ -14,16 +14,22 @@ public class TileMap {
     private PathTile start_tile;
     private PathTile end_tile;
     private int tile_size;
+    private boolean isEmpty = false;
 
 
-    public TileMap(Image png_map){
+    public TileMap(){
 
-        tiles = MapGenerator.generate(png_map); ///< Generates tiles from png file
+        tiles = MapGenerator.generate(); ///< Generates tiles from png file
         start_tile = MapGenerator.setStart(tiles); ///< Sets the start tile variable
         MapGenerator.linkPath(tiles, start_tile); ///< Assigns the last and next variable in every PathTile
         end_tile = MapGenerator.setEnd(tiles); ///< Sets end tile variable
 
         tile_size = tiles[0][0].getTexture().getWidth(); ///< Sets the pixel size of tiles
+    }
+
+    public TileMap(Tile[][] tilemap) {
+        tiles = tilemap;
+        isEmpty = true;
     }
 
     /// Renders map to buffer ///
@@ -65,5 +71,13 @@ public class TileMap {
         }
 
         return false;
+    }
+
+    public int getWidth(){
+        return tiles.length;
+    }
+
+    public int getHeight(){
+        return tiles[0].length;
     }
 }

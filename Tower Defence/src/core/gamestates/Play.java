@@ -5,7 +5,6 @@
 package core.gamestates;
 
 import core.Core;
-import data.PNGMaps;
 import data.Textures;
 import entities.Player;
 import entities.critters.CritterManager;
@@ -13,7 +12,7 @@ import entities.towers.Tower;
 import entities.towers.TowerManager;
 import gui.control.GUIController;
 import gui.control.states.GUIStateIDs;
-import gui.control.states.PlayMain_gui;
+import gui.control.states.Play_gui;
 import map.Tile;
 import map.TileMap;
 import org.newdawn.slick.*;
@@ -67,6 +66,8 @@ public class Play extends BasicGameState {
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
+        graphics.setBackground(new Color(0, 135, 255));
+        graphics.clear();
         map.render();
         critterManager.render();
         towerManager.render();
@@ -153,11 +154,11 @@ public class Play extends BasicGameState {
         super.enter(container, game);
         lost = false;
         player = new Player(400, 20, this);
-        map = new TileMap(PNGMaps.testmap_3);
+        map = new TileMap();
         critterManager = new CritterManager("res/files/sample_level.txt", map.getStartTile(), map.getEndTile(), this);
         towerManager = new TowerManager(map);
         particleSystem = ParticleUtilities.createSystem(Textures.SQAURE_PARTICLE_TEXTURE, 2000);
-        guiController.addState(new PlayMain_gui(GUIStateIDs.PLAY_MAIN.ID, player, map, this));
+        guiController.addState(new Play_gui(GUIStateIDs.PLAY_MAIN.ID, player, map, this));
         guiController.enterState(GUIStateIDs.PLAY_MAIN.ID);
 
 
