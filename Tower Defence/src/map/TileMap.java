@@ -1,7 +1,7 @@
 package map;
 
 import map.path.PathTile;
-import org.newdawn.slick.Image;
+import util.vectors.ivec2;
 import util.vectors.vec2;
 
 /**
@@ -20,16 +20,20 @@ public class TileMap {
     public TileMap(){
 
         tiles = MapGenerator.generate(); ///< Generates tiles from png file
-        start_tile = MapGenerator.setStart(tiles); ///< Sets the start tile variable
-        MapGenerator.linkPath(tiles, start_tile); ///< Assigns the last and next variable in every PathTile
-        end_tile = MapGenerator.setEnd(tiles); ///< Sets end tile variable
+        isEmpty = false;
 
+        if (!isEmpty) {
+            start_tile = MapGenerator.setStart(tiles); ///< Sets the start tile variable
+            MapGenerator.linkPath(tiles, start_tile); ///< Assigns the last and next variable in every PathTile
+            end_tile = MapGenerator.setEnd(tiles); ///< Sets end tile variable
+        }
         tile_size = tiles[0][0].getTexture().getWidth(); ///< Sets the pixel size of tiles
     }
 
     public TileMap(Tile[][] tilemap) {
         tiles = tilemap;
         isEmpty = true;
+        tile_size = tiles[0][0].getTexture().getWidth(); ///< Sets the pixel size of tiles
     }
 
     /// Renders map to buffer ///
@@ -71,6 +75,19 @@ public class TileMap {
         }
 
         return false;
+    }
+
+    /// Returns indices at point ///
+    public ivec2 get_ij(vec2 pos){
+        int i = (int) (pos.x / tile_size);
+        int j = (int) (pos.y / tile_size);
+
+        return new ivec2(i, j);
+    }
+
+    /// Returns tile array///
+    public Tile[][] getTiles(){
+        return tiles;
     }
 
     public int getWidth(){

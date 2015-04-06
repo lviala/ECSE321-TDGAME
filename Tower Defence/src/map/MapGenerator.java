@@ -8,8 +8,10 @@ import org.newdawn.slick.SlickException;
 import util.vectors.ivec2;
 import util.vectors.vec2;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.HashMap;
 
 /**
@@ -89,8 +91,8 @@ public class MapGenerator {
 
         Tile[][] tilemap = new Tile[image.getWidth()][image.getHeight()];
 
-        int tileWidth = Textures.GRASS_TILE_TEXTURE.getWidth(); ///< Map width
-        int tileHeight = Textures.GRASS_TILE_TEXTURE.getHeight(); ///< Map height
+        int tileWidth = Textures.ALT_GRASS_LIGHT_TEXTURE.getWidth(); ///< Map width
+        int tileHeight = Textures.ALT_GRASS_LIGHT_TEXTURE.getHeight(); ///< Map height
 
         for (int j = 0; j < image.getHeight(); j++) {
             for (int i = 0; i < image.getWidth(); i++) {
@@ -275,7 +277,6 @@ public class MapGenerator {
     }
 
     public static HashMap<String, Image> loadMaps(){
-        System.out.println("Method ran");
 
         File directory = new File("res/maps");
         HashMap<String, Image> mapData = new HashMap<String, Image>();
@@ -284,7 +285,7 @@ public class MapGenerator {
             File[] files = directory.listFiles();
 
             for (File file : files){
-                String path = file.getPath();                    System.out.println("Is PNG");
+                String path = file.getPath();
 
                 if (path.substring(path.length() - 3, path.length()).equals("png")){
                     try {
@@ -302,8 +303,8 @@ public class MapGenerator {
 
     public static TileMap generateEmpty(Size s){
 
-        int tileWidth = Textures.GRASS_TILE_TEXTURE.getWidth(); ///< Map width
-        int tileHeight = Textures.GRASS_TILE_TEXTURE.getHeight(); ///< Map height
+        int tileWidth = Textures.ALT_GRASS_LIGHT_TEXTURE.getWidth(); ///< Map width
+        int tileHeight = Textures.ALT_GRASS_LIGHT_TEXTURE.getHeight(); ///< Map height
 
         Tile[][] tilemap = new Tile[s.w][s.h];
         for (int i = 0; i < s.w; i++){
@@ -317,6 +318,150 @@ public class MapGenerator {
         }
 
         return new TileMap(tilemap);
+    }
+
+    public static String verifyMap(Image image){
+
+        boolean startFound = false; ///< Map validity verification boolean
+        boolean endFound = false; ///< Map validity verification boolean
+
+
+        for (int j = 0; j < image.getHeight(); j++) {
+            for (int i = 0; i < image.getWidth(); i++) {
+
+                if (image.getColor(i, j).equals(GRASS_GEN_COLOR)) {
+
+                } else if (image.getColor(i, j).equals(SAND_GEN_COLOR)) {
+
+                }else if (image.getColor(i, j).equals(PATH_START_COLOR)) {
+
+                    if  (startFound){
+                        return "Multiple start tiles found in map";
+                    }
+                    startFound = true;
+
+                }else if (image.getColor(i, j).equals(PATH_END_COLOR)) {
+
+                    if  (endFound){
+                        return "Multiple end tiles found in map";
+                    }
+                    endFound = true;
+                }
+
+            }
+        }
+
+
+        Tile[][] testTiles = generate(image);
+
+
+        ///VERIFY PATH///
+
+        PathTile current;
+
+        try {
+            current = setStart(testTiles);
+            setEnd(testTiles);
+        }catch (Exception e){
+            return e.getMessage();
+        }
+
+        if  (!current.isStart()) return "Not valid start tile";
+
+        boolean firstLoop = true;
+
+        do {
+            if (!firstLoop) current = current.getNext();
+            int count = 0;
+            ivec2 ij = current.get_ij();
+
+            if (ij.x > 0) {
+                if (testTiles[ij.x - 1][ij.y] instanceof PathTile && ij.x > 0 && testTiles[ij.x - 1][ij.y] != current.getPrevious()) {
+                    current.setNext((PathTile) testTiles[ij.x - 1][ij.y]);
+                    current.getNext().setPrevious(current);
+                    count++;
+                }
+            }
+            if (ij.y > 0) {
+                if (testTiles[ij.x][ij.y - 1] instanceof PathTile && ij.y > 0 && testTiles[ij.x][ij.y - 1] != current.getPrevious()) {
+                    current.setNext((PathTile) testTiles[ij.x][ij.y - 1]);
+                    current.getNext().setPrevious(current);
+                    count++;
+                }
+            }
+            if (ij.x < testTiles.length - 1) {
+                if (testTiles[ij.x + 1][ij.y] instanceof PathTile && ij.x < testTiles.length && testTiles[ij.x + 1][ij.y] != current.getPrevious()) {
+                    current.setNext((PathTile) testTiles[ij.x + 1][ij.y]);
+                    current.getNext().setPrevious(current);
+                    count++;
+                }
+            }
+            if (ij.y < testTiles[0].length - 1) {
+                if (testTiles[ij.x][ij.y + 1] instanceof PathTile && ij.y < testTiles[0].length && testTiles[ij.x][ij.y + 1] != current.getPrevious()) {
+                    current.setNext((PathTile) testTiles[ij.x][ij.y + 1]);
+                    current.getNext().setPrevious(current);
+                    count++;
+                }
+            }
+            if (count > 1) return "Forking Path";
+            if (current.getNext() == null){
+                if (!current.isEnd()){
+                    return "Broken Path";
+                }
+            }
+
+            firstLoop = false;
+        } while (current.getNext() != null);
+
+        return null;
+    }
+
+
+    public static BufferedImage makePNG(TileMap map) {
+
+        ///STUFF FOR MANE CHECKING
+
+
+        int red = 0xFF0000;
+        int blue = 0x0000FF;
+        int yellow = 0xFFFF00;
+        int green = 0x00FF00;
+
+        BufferedImage pngMap = new BufferedImage(map.getWidth(), map.getHeight(), BufferedImage.TYPE_INT_RGB);
+        Tile[][] tiles = map.getTiles();
+
+        for (int i = 0; i < tiles.length; i++) {
+            for (int j = 0; j < tiles[0].length; j++) {
+
+                if (tiles[i][j] instanceof PathTile) {
+                    if (((PathTile) tiles[i][j]).isStart()) pngMap.setRGB(i, j, blue);
+                    else if (((PathTile) tiles[i][j]).isEnd()) pngMap.setRGB(i, j, red);
+                    else pngMap.setRGB(i, j, yellow);
+                } else {
+                    pngMap.setRGB(i, j, green);
+                }
+            }
+        }
+
+        return pngMap;
+
+    }
+
+    public static Image getSlickimage(BufferedImage im){
+        File output = new File("temp.png");
+        output.delete();
+        Image image = null;
+
+        try{
+            ImageIO.write(im, "png", output);
+            image = new Image("temp.png");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }catch (SlickException e){
+            e.printStackTrace();
+        }
+
+        return image;
     }
 
     private MapGenerator(){} ///< private constructor to prevent instantiation of this class

@@ -1,6 +1,5 @@
 package gui.control.states;
 
-import core.Core;
 import data.Textures;
 import gui.control.GUIState;
 import gui.elements.buttons.MenuButton;
@@ -17,6 +16,7 @@ public class MainMenu_gui extends GUIState {
     private final int SETTINGS_ID = 1;
     private final int CONTROLS_ID = 2;
     private final int EXIT_ID = 3;
+    private final int EDITOR_ID = 4;
 
 
 
@@ -26,10 +26,11 @@ public class MainMenu_gui extends GUIState {
 
     @Override
     public void init() {
-        addElement(new MenuButton(PLAY_ID, new vec2((controller.getGameContainer().getWidth() / 2) - (Textures.PLAY_BUTTON_TEXTURE.getWidth() / 2), 100), Textures.PLAY_BUTTON_TEXTURE));
-        addElement(new MenuButton(SETTINGS_ID, new vec2((controller.getGameContainer().getWidth() / 2) - (Textures.SETTINGS_BUTTON_TEXTURE.getWidth() / 2), 250), Textures.SETTINGS_BUTTON_TEXTURE));
-        addElement(new MenuButton(CONTROLS_ID, new vec2((controller.getGameContainer().getWidth() / 2) - (Textures.CONTROLS_BUTTON_TEXTURE.getWidth() / 2), 400), Textures.CONTROLS_BUTTON_TEXTURE));
-        addElement(new MenuButton(EXIT_ID, new vec2((controller.getGameContainer().getWidth() / 2) - (Textures.EXIT_BUTTON_TEXTURE.getWidth() / 2), 550), Textures.EXIT_BUTTON_TEXTURE));
+        addElement(new MenuButton(PLAY_ID, new vec2((controller.getGameContainer().getWidth() / 2) - (Textures.PLAY_BUTTON_TEXTURE.getWidth() / 2), 50), Textures.PLAY_BUTTON_TEXTURE));
+        addElement(new MenuButton(SETTINGS_ID, new vec2((controller.getGameContainer().getWidth() / 2) - (Textures.SETTINGS_BUTTON_TEXTURE.getWidth() / 2), 175), Textures.SETTINGS_BUTTON_TEXTURE));
+        addElement(new MenuButton(CONTROLS_ID, new vec2((controller.getGameContainer().getWidth() / 2) - (Textures.CONTROLS_BUTTON_TEXTURE.getWidth() / 2), 300), Textures.CONTROLS_BUTTON_TEXTURE));
+        addElement(new MenuButton(EXIT_ID, new vec2((controller.getGameContainer().getWidth() / 2) - (Textures.EXIT_BUTTON_TEXTURE.getWidth() / 2), 575), Textures.EXIT_BUTTON_TEXTURE));
+        addElement(new MenuButton(EDITOR_ID, new vec2((controller.getGameContainer().getWidth() / 2) - (Textures.EXIT_BUTTON_TEXTURE.getWidth() / 2), 425), Textures.EDITOR_BUTTON_TEXTURE));
     }
 
     @Override
@@ -63,6 +64,11 @@ public class MainMenu_gui extends GUIState {
             case EXIT_ID:
                 if (mouseButton == Input.MOUSE_LEFT_BUTTON){
                     controller.getGameContainer().exit();
+                }
+                break;
+            case EDITOR_ID:
+                if (mouseButton == Input.MOUSE_LEFT_BUTTON){
+                    controller.enterState(GUIStateIDs.EDITOR_SELECT.ID);
                 }
                 break;
         }

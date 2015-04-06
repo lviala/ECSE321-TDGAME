@@ -39,6 +39,7 @@ public class Menu extends BasicGameState {
         guiController.addState(new MapTypeSelect_gui(GUIStateIDs.MAP_TYPE.ID));
         guiController.addState(new MapSelect_gui(GUIStateIDs.MAP_SELECT.ID));
         guiController.addState(new RandomSelect_gui(GUIStateIDs.RANDOM_SELECT.ID));
+        guiController.addState(new EditorSelect_gui(GUIStateIDs.EDITOR_SELECT.ID));
     }
 
     @Override

@@ -5,22 +5,21 @@
 package core.gamestates;
 
 import core.Core;
-import data.Textures;
-import entities.Player;
-import entities.critters.CritterManager;
-import entities.towers.Tower;
-import entities.towers.TowerManager;
 import gui.control.GUIController;
+import gui.control.states.Editor_gui;
 import gui.control.states.GUIStateIDs;
 import map.MapGenerator;
-import map.Tile;
 import map.TileMap;
 import org.newdawn.slick.*;
-import org.newdawn.slick.particles.ParticleSystem;
+import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import particles.ParticleUtilities;
 import util.MouseWrapper;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class Editor extends BasicGameState {
 
@@ -28,23 +27,23 @@ public class Editor extends BasicGameState {
 
     private int stateID;
 
-    private Player player;
     private TileMap map;
     private MouseWrapper mouse;
 
     private GameContainer gameContainer;
     private StateBasedGame stateBasedGame;
-    private CritterManager critterManager;
-    private TowerManager towerManager;
     private GUIController guiController;
 
-    private ParticleSystem particleSystem;
+    private TextField textBox;
 
-    private boolean lost = false;
+    private boolean paused = false;
+    private boolean createMessagePaused = false;
+    private String pauseString = "";
+
+
 
 
     /// Testing ///
-
 
 
     /// End Testing ///
@@ -64,6 +63,9 @@ public class Editor extends BasicGameState {
         guiController = new GUIController(gameContainer, stateBasedGame, mouse);
         this.gameContainer = gameContainer;
         this.stateBasedGame = stateBasedGame;
+
+        textBox = new TextField(gameContainer, gameContainer.getGraphics().getFont(), 700, 600, 165, 20);
+        textBox.setText("MAP NAME");
     }
 
     @Override
@@ -71,39 +73,37 @@ public class Editor extends BasicGameState {
         graphics.setBackground(new Color(0, 135, 255));
         graphics.clear();
         map.render();
-        critterManager.render();
-        towerManager.render();
-        particleSystem.render();
         guiController.render(graphics);
+        textBox.render(gameContainer, graphics);
+
 
         graphics.setColor(Color.black);
-        graphics.drawString("Cash: " + player.getCurrency(), 10, 600);
-        graphics.drawString("Lives: " + player.getLives(), 10, 625);
-        graphics.drawString("Wave: " + critterManager.getWaveNumber(), 10, 650);
-        graphics.drawString("Health Multiplier: " + (float)(1.0f + (critterManager.getWaveNumber() - 1.0f)/5.0f), 10, 700);
 
+        graphics.drawString("START", 207, 580);
+        graphics.drawString("END", 367, 580);
+        graphics.drawString("PATH", 512, 580);
 
-        graphics.drawString("" + Tower.Type.SNIPER.cost(), 215, 670);
-        graphics.drawString("" + Tower.Type.SLOW.cost(), 365, 670);
-        graphics.drawString("" + Tower.Type.RAPID.cost(), 515, 670);
+        graphics.setColor(Color.orange);
 
-        graphics.drawString("SNIPER", 205, 580);
-        graphics.drawString("SLOW", 362, 580);
-        graphics.drawString("RAPID", 509, 580);
+        if (createMessagePaused){
+            graphics.setColor(Color.black);
+            graphics.fillRect(gameContainer.getWidth() / 2 - 300, gameContainer.getHeight() / 2 - 50, 600, 100);
+            graphics.setColor(Color.white);
+            graphics.drawString(pauseString, gameContainer.getWidth() / 2 - 300, gameContainer.getHeight() / 2 - 30);
+            graphics.drawString("Press SPACE to resume", gameContainer.getWidth() / 2 - 100, gameContainer.getHeight() / 2 + 14 );
+        }
 
-
-        if (lost){
+        if (paused){
             graphics.setColor(Color.black);
             graphics.fillRect(gameContainer.getWidth() / 2 - 150, gameContainer.getHeight() / 2 - 50, 300, 100);
             graphics.setColor(Color.white);
-            graphics.drawString("GAME OVER", gameContainer.getWidth() / 2 - 43, gameContainer.getHeight() / 2 - 30);
-            graphics.drawString("Press ESC to close", gameContainer.getWidth() / 2 - 100, gameContainer.getHeight() / 2 + 0 );
+            graphics.drawString("PAUSED", gameContainer.getWidth() / 2 - 43, gameContainer.getHeight() / 2 - 30);
+            graphics.drawString("Press ESC to resume", gameContainer.getWidth() / 2 - 100, gameContainer.getHeight() / 2 + 0 );
             graphics.drawString("Press SPACE to restart", gameContainer.getWidth() / 2 - 100, gameContainer.getHeight() / 2 + 14 );
             graphics.drawString("Press ENTER for Main Menu", gameContainer.getWidth() / 2 - 100, gameContainer.getHeight() / 2 + 28 );
         }
 
         /// Testing ///
-
 
 
         /// End Testing ///
@@ -112,13 +112,9 @@ public class Editor extends BasicGameState {
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int delta) throws SlickException {
-        if (!lost) {
-            mouse.update();
-            guiController.update();
-            critterManager.update(delta);
-            towerManager.update(delta);
-            particleSystem.update(delta);
-        }
+        mouse.update();
+        guiController.update();
+
         /// Testing ///
 
 
@@ -127,43 +123,68 @@ public class Editor extends BasicGameState {
 
     @Override
     public void keyPressed(int key, char c) {
-        super.keyPressed(key, c);
+        if (!createMessagePaused && !paused) {
+            super.keyPressed(key, c);
 
-        switch (key){
-            case Input.KEY_ESCAPE:
-                gameContainer.exit();
-                break;
-            case Input.KEY_SPACE:
-                critterManager.startNextWave();
-        }
 
-        if (lost){
-            switch (key){
+            String curtext = textBox.getText();
+
+            if (curtext.length() <= 16) {
+                if (isLegalCharacter(c)) {
+                    curtext = curtext.concat(Character.toString(c));
+                    textBox.setText(curtext);
+                }
+            }
+
+
+            switch (key) {
+                case Input.KEY_ESCAPE:
+                    paused = true;
+                    break;
+                case Input.KEY_BACK:
+                    String text = textBox.getText();
+                    if (text.length() > 0) {
+                        text = text.substring(0, text.length() - 1);
+                        textBox.setText(text);
+                    }
+                    break;
+            }
+
+
+        } else if (createMessagePaused) {
+            switch (key) {
                 case Input.KEY_SPACE:
-                    stateBasedGame.enterState(Core.PLAY);
+                    createMessagePaused = false;
+                    pauseString = "";
+                    break;
+            }
+        } else if (paused) {
+            switch (key) {
+                case Input.KEY_ESCAPE:
+                    paused = false;
+                    break;
+                case Input.KEY_SPACE:
+                    paused = false;
+                    stateBasedGame.enterState(Core.EDITOR);
                     break;
                 case Input.KEY_ENTER:
+                    paused = false;
                     stateBasedGame.enterState(Core.MENU);
                     break;
             }
+
         }
-
-
     }
 
     @Override
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
         super.enter(container, game);
-        lost = false;
         map = MapGenerator.generateEmpty(mapsize);
-        towerManager = new TowerManager(map);
-        particleSystem = ParticleUtilities.createSystem(Textures.SQAURE_PARTICLE_TEXTURE, 2000);
-        //guiController.addState(new Play_gui(GUIStateIDs.PLAY_MAIN.ID, player, map, this));
-        guiController.enterState(GUIStateIDs.PLAY_MAIN.ID);
+        guiController.addState(new Editor_gui(GUIStateIDs.EDITOR_MAIN.ID, map, this));
+        guiController.enterState(GUIStateIDs.EDITOR_MAIN.ID);
 
 
         /// Testing ///
-
 
         /// End Testing ///
 
@@ -171,37 +192,79 @@ public class Editor extends BasicGameState {
 
     @Override
     public void mouseClicked(int mouseButton, int x, int y, int clickCount) {
-        super.mouseClicked(mouseButton, x, y, clickCount);
-        guiController.mouseClicked(mouseButton, clickCount);
+        if (!createMessagePaused && !paused) {
+            super.mouseClicked(mouseButton, x, y, clickCount);
+            guiController.mouseClicked(mouseButton, clickCount);
+        }
     }
 
-    public void addTower(Tower.Type type){
-        if (player.getCurrency() >= type.cost() && map.withinMap(mouse.getPosition())) {
-            Tile tile = map.getTile(mouse.getPosition().x, mouse.getPosition().y);
-            Tower tower = Tower.create(type, tile.getPosition(), critterManager, particleSystem);
 
-            if (tile.placeTower(tower)) {
-                towerManager.addTower(tower);
-                player.updateCurrency(-type.cost());
+
+    private boolean isLegalCharacter(char c){
+       if (c == 32 ) return true;
+       if (c >= 48 && c <= 57 ) return true;
+       if (c >= 65 && c <= 90 ) return true;
+       if (c >= 97 && c <= 122 ) return true;
+
+        return false;
+    }
+
+    public void saveMap() {
+
+        if (fileAllreadyExists()){
+
+            pauseString = "File with name allready exists";
+            createMessagePaused = true;
+
+        }else if (textBox.getText().equals("MAP NAME")){
+
+            pauseString = "Enter map name";
+            createMessagePaused = true;
+
+        }else {
+
+            BufferedImage image = MapGenerator.makePNG(map);
+            Image slickImage = MapGenerator.getSlickimage(image);
+
+            String message = MapGenerator.verifyMap(slickImage);
+
+            if (message == null) {
+
+
+                File output = new File("res/maps/" + textBox.getText() + ".png");
+                try {
+                    ImageIO.write(image, "png", output);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                pauseString = "Map saved successfully";
+                createMessagePaused = true;
+
+            } else {
+                pauseString = message;
+                createMessagePaused = true;
+            }
+            try {
+                slickImage.destroy();
+            } catch (SlickException e) {
+                e.printStackTrace();
             }
         }
     }
 
-    public void sellTower(Tile tile) {
-        towerManager.removeTower(tile.getTower());
-        player.updateCurrency(tile.getTower().getSellValue());
-        tile.removeTower();
+    private boolean fileAllreadyExists(){
+
+        File dir = new File("res/maps/");
+        File[] files = dir.listFiles();
+
+        String name = textBox.getText() + ".png";
+
+        for (File f : files){
+            if (f.getName().equals(name)) return true;
+        }
+
+        return false;
     }
 
-    public void removeLife() {
-        player.removeLife();
-    }
-
-    public void rewardPlayer(int value){
-        player.updateCurrency(value);
-    }
-
-    public void lostGame() {
-        lost = true;
-    }
 }

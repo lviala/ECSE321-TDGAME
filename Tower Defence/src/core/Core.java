@@ -1,11 +1,13 @@
 package core;
 
+import core.gamestates.Editor;
 import core.gamestates.Menu;
 import core.gamestates.Play;
-import map.MapGenerator;
-import org.newdawn.slick.*;
+import org.newdawn.slick.AppGameContainer;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.ScalableGame;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.tests.CanvasContainerTest;
 
 /**
  * * Created by Francis O'Brien - 1/7/2015 - 12:13 AM
@@ -37,6 +39,7 @@ public class Core extends StateBasedGame{
     /// Enumeration of game states
     public static final int MENU = 0;
     public static final int PLAY = 1;
+    public static final int EDITOR = 2;
 
     public static AppGameContainer appgc;
 
@@ -65,6 +68,7 @@ public class Core extends StateBasedGame{
         /// Declare game states
         this.addState(new Menu(MENU));
         this.addState(new Play(PLAY));
+        this.addState(new Editor(EDITOR));
     }
 
     @Override
@@ -73,6 +77,7 @@ public class Core extends StateBasedGame{
         /// Initialize game states
         this.getState(MENU).init(gameContainer, this);
         this.getState(PLAY).init(gameContainer, this);
+        this.getState(EDITOR).init(gameContainer, this);
 
         /// Tell the game loop which pair of Update and Render functions we will be using at first
         this.enterState(MENU); ///< Initialize to Menu

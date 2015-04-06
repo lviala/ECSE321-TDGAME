@@ -17,7 +17,9 @@ public enum GUIStateIDs {
     ///Map Select///
     MAP_TYPE(4),
     RANDOM_SELECT(5),
-    MAP_SELECT(6);
+    MAP_SELECT(6),
+    EDITOR_MAIN(7),
+    EDITOR_SELECT(8);
 
     public final int ID;
 

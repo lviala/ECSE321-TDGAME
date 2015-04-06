@@ -39,6 +39,7 @@ public class Play extends BasicGameState {
     private ParticleSystem particleSystem;
 
     private boolean lost = false;
+    private boolean paused = false;
 
 
     /// Testing ///
@@ -95,7 +96,15 @@ public class Play extends BasicGameState {
             graphics.fillRect(gameContainer.getWidth() / 2 - 150, gameContainer.getHeight() / 2 - 50, 300, 100);
             graphics.setColor(Color.white);
             graphics.drawString("GAME OVER", gameContainer.getWidth() / 2 - 43, gameContainer.getHeight() / 2 - 30);
-            graphics.drawString("Press ESC to close", gameContainer.getWidth() / 2 - 100, gameContainer.getHeight() / 2 + 0 );
+            graphics.drawString("Press SPACE to restart", gameContainer.getWidth() / 2 - 100, gameContainer.getHeight() / 2 + 14 );
+            graphics.drawString("Press ENTER for Main Menu", gameContainer.getWidth() / 2 - 100, gameContainer.getHeight() / 2 + 28 );
+        }
+        if (paused){
+            graphics.setColor(Color.black);
+            graphics.fillRect(gameContainer.getWidth() / 2 - 150, gameContainer.getHeight() / 2 - 50, 300, 100);
+            graphics.setColor(Color.white);
+            graphics.drawString("PAUSED", gameContainer.getWidth() / 2 - 43, gameContainer.getHeight() / 2 - 30);
+            graphics.drawString("Press ESC to resume", gameContainer.getWidth() / 2 - 100, gameContainer.getHeight() / 2 + 0 );
             graphics.drawString("Press SPACE to restart", gameContainer.getWidth() / 2 - 100, gameContainer.getHeight() / 2 + 14 );
             graphics.drawString("Press ENTER for Main Menu", gameContainer.getWidth() / 2 - 100, gameContainer.getHeight() / 2 + 28 );
         }
@@ -110,7 +119,7 @@ public class Play extends BasicGameState {
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int delta) throws SlickException {
-        if (!lost) {
+        if (!lost && !paused) {
             mouse.update();
             guiController.update();
             critterManager.update(delta);
@@ -125,17 +134,18 @@ public class Play extends BasicGameState {
 
     @Override
     public void keyPressed(int key, char c) {
-        super.keyPressed(key, c);
+        if (!paused && !lost) {
+            super.keyPressed(key, c);
 
-        switch (key){
-            case Input.KEY_ESCAPE:
-                gameContainer.exit();
-                break;
-            case Input.KEY_SPACE:
-                critterManager.startNextWave();
-        }
+            switch (key) {
+                case Input.KEY_ESCAPE:
+                    paused = true;
+                    break;
+                case Input.KEY_SPACE:
+                    critterManager.startNextWave();
+            }
 
-        if (lost){
+        } else if (lost){
             switch (key){
                 case Input.KEY_SPACE:
                     stateBasedGame.enterState(Core.PLAY);
@@ -144,6 +154,21 @@ public class Play extends BasicGameState {
                     stateBasedGame.enterState(Core.MENU);
                     break;
             }
+        } else if (paused) {
+            switch (key) {
+                case Input.KEY_ESCAPE:
+                    paused = false;
+                    break;
+                case Input.KEY_SPACE:
+                    paused = false;
+                    stateBasedGame.enterState(Core.PLAY);
+                    break;
+                case Input.KEY_ENTER:
+                    paused = false;
+                    stateBasedGame.enterState(Core.MENU);
+                    break;
+            }
+
         }
 
 

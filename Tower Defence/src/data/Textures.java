@@ -23,12 +23,12 @@ public final class Textures {
     public static final Texture RAPID_TOWER_TEXTURE = new Texture("res/textures/entities/rapid_tower.png"); ///< Test tower
 
     /// Tile textures
-    public static final Texture GRASS_TILE_TEXTURE = new Texture("/res/textures/tiles/grass_tile_64.png");
-    public static final Texture SAND_TILE_TEXTURE = new Texture("/res/textures/tiles/sand_tile_64.png");
-
     public static final Texture ALT_GRASS_DARK_TEXTURE = new Texture("/res/textures/tiles/alt_grass_dark_64.png");
     public static final Texture ALT_GRASS_LIGHT_TEXTURE = new Texture("/res/textures/tiles/alt_grass_light_64.png");
     public static final Texture ALT_PATH_TEXTURE = new Texture("/res/textures/tiles/alt_path_64.png");
+
+    public static final Texture RED_TILE_TEXTURE = new Texture("/res/textures/tiles/red_tile.png");
+    public static final Texture BLUE_TILE_TEXTURE = new Texture("/res/textures/tiles/blue_tile.png");
 
     /// Button textures
 
@@ -38,6 +38,7 @@ public final class Textures {
     public static final Texture CONTROLS_BUTTON_TEXTURE = new Texture("/res/textures/gui/controlsbutton.png");
     public static final Texture EXIT_BUTTON_TEXTURE = new Texture("/res/textures/gui/exitbutton.png");
     public static final Texture BACK_BUTTON_TEXTURE = new Texture("/res/textures/gui/backbutton.png");
+    public static final Texture EDITOR_BUTTON_TEXTURE = new Texture("/res/textures/gui/editor_button.png");
 
         ///Map Selection
     public static final Texture RANDOM_BUTTON_TEXTURE = new Texture("/res/textures/gui/random_button.png");
@@ -51,6 +52,23 @@ public final class Textures {
     public static final Texture LARGE_BUTTON = new Texture("/res/textures/gui/large_button.png");
     public static final Texture MEDIUM_BUTTON = new Texture("/res/textures/gui/medium_button.png");
     public static final Texture SMALL_BUTTON = new Texture("/res/textures/gui/small_button.png");
+
+        ///Editor
+    public static final Texture RED_IDLE_TEXTURE = new Texture("/res/textures/gui/editor_state/red_idle.png");
+    public static final Texture RED_MO_TEXTURE = new Texture("/res/textures/gui/editor_state/red_mo.png");
+    public static final Texture RED_DOWN_TEXTURE = new Texture("/res/textures/gui/editor_state/red_down.png");
+
+    public static final Texture BLUE_IDLE_TEXTURE = new Texture("/res/textures/gui/editor_state/blue_idle.png");
+    public static final Texture BLUE_MO_TEXTURE = new Texture("/res/textures/gui/editor_state/blue_mo.png");
+    public static final Texture BLUE_DOWN_TEXTURE = new Texture("/res/textures/gui/editor_state/blue_down.png");
+
+    public static final Texture YELLOW_IDLE_TEXTURE = new Texture("/res/textures/gui/editor_state/yellow_idle.png");
+    public static final Texture YELLOW_MO_TEXTURE = new Texture("/res/textures/gui/editor_state/yellow_mo.png");
+    public static final Texture YELLOW_DOWN_TEXTURE = new Texture("/res/textures/gui/editor_state/yellow_down.png");
+
+    public static final Texture SAVE_IDLE_TEXTURE = new Texture("/res/textures/gui/editor_state/save_idle.png");
+    public static final Texture SAVE_MO_TEXTURE = new Texture("/res/textures/gui/editor_state/save_mo.png");
+
 
     /// Play GUI
 
